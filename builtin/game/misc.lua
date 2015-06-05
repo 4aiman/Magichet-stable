@@ -11,6 +11,7 @@ core.register_globalstep(function(dtime)
 		table.insert(core.timers, timer)
 	end
 	core.timers_to_add = {}
+	local end_ms = os.clock() * 1000 + 50
 	local index = 1
 	while index <= #core.timers do
 		local timer = core.timers[index]
@@ -21,6 +22,7 @@ core.register_globalstep(function(dtime)
 		else
 			index = index + 1
 		end
+		if os.clock() * 1000 > end_ms then return end
 	end
 end)
 
@@ -60,8 +62,8 @@ function core.get_connected_players()
 	local temp_table = {}
 	for index, value in pairs(player_list) do
 		if value:is_player_connected() then
-			table.insert(temp_table, value)
-		end
+		table.insert(temp_table, value)
+	end
 	end
 	return temp_table
 end
@@ -112,14 +114,11 @@ function core.record_protection_violation(pos, name)
 	end
 end
 
-local raillike_ids = {}
-local raillike_cur_id = 0
-function core.raillike_group(name)
-	local id = raillike_ids[name]
-	if not id then
-		raillike_cur_id = raillike_cur_id + 1
-		raillike_ids[name] = raillike_cur_id
-		id = raillike_cur_id
-	end
-	return id
+function freeminer.color(color)
+	assert(#color == 6, "Color must be six characters in length.")
+	return "\v" .. color
+end
+
+function freeminer.colorize(color, message)
+	return freeminer.color(color) .. message .. freeminer.color("ffffff")
 end

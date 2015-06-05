@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 sapier, sapier at gmx dot net
 
 This program is free software; you can redistribute it and/or modify
@@ -568,7 +568,7 @@ path_cost pathfinder::calc_cost(v3s16 pos,v3s16 dir) {
 			}
 		}
 		else {
-			DEBUG_OUT("Pathfinder: no surface above found" << std::endl);
+			//DEBUG_OUT("Pathfinder: no surface above found" << std::endl);
 		}
 	}
 	return retval;

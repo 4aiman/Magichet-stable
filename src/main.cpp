@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -299,7 +299,7 @@ static void set_allowed_options(OptionList *allowed_options)
 	allowed_options->insert(std::make_pair("gameid", ValueSpec(VALUETYPE_STRING,
 			_("Set gameid (\"--gameid list\" prints available ones)"))));
 	allowed_options->insert(std::make_pair("migrate", ValueSpec(VALUETYPE_STRING,
-			_("Migrate from current map backend to another (Only works when using minetestserver or with --server)"))));
+			_("Migrate from current map backend to another (Only works when using magichetserver or with --server)"))));
 #ifndef SERVER
 	allowed_options->insert(std::make_pair("videomodes", ValueSpec(VALUETYPE_FLAG,
 			_("Show available video modes"))));
@@ -506,16 +506,16 @@ static bool read_config_file(const Settings &cmd_args)
 		g_settings_path = cmd_args.get("config");
 	} else {
 		std::vector<std::string> filenames;
-		filenames.push_back(porting::path_user + DIR_DELIM + "minetest.conf");
+		filenames.push_back(porting::path_user + DIR_DELIM + "magichet.conf");
 		// Legacy configuration file location
 		filenames.push_back(porting::path_user +
-				DIR_DELIM + ".." + DIR_DELIM + "minetest.conf");
+				DIR_DELIM + ".." + DIR_DELIM + "magichet.conf");
 
 #if RUN_IN_PLACE
 		// Try also from a lower level (to aid having the same configuration
 		// for many RUN_IN_PLACE installs)
 		filenames.push_back(porting::path_user +
-				DIR_DELIM + ".." + DIR_DELIM + ".." + DIR_DELIM + "minetest.conf");
+				DIR_DELIM + ".." + DIR_DELIM + ".." + DIR_DELIM + "magichet.conf");
 #endif
 
 		for (size_t i = 0; i < filenames.size(); i++) {

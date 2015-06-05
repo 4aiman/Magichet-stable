@@ -1,5 +1,5 @@
 /*
- Minetest
+ Magichet
  Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
  Copyright (C) 2013 Ciaran Gultnieks <ciaran@ciarang.com>
  Copyright (C) 2013 teddydestodes <derkomtur@schattengang.net>
@@ -122,7 +122,7 @@ void GUIKeyChangeMenu::regenerateGui(v2u32 screensize)
 		core::rect < s32 > rect(0, 0, 600, 40);
 		rect += topleft + v2s32(25, 3);
 		//gui::IGUIStaticText *t =
-		const wchar_t *text = wgettext("Keybindings. (If this menu screws up, remove stuff from minetest.conf)");
+		const wchar_t *text = wgettext("Keybindings. (If this menu screws up, remove stuff from magichet.conf)");
 		Environment->addStaticText(text,
 								   rect, false, true, this, -1);
 		delete[] text;

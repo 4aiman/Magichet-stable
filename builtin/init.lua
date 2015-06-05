@@ -10,6 +10,8 @@ print = core.debug
 math.randomseed(os.time())
 os.setlocale("C", "numeric")
 minetest = core
+freeminer = core
+magichet = core
 
 -- Load other files
 local scriptdir = core.get_builtin_path()..DIR_DELIM
@@ -17,9 +19,14 @@ local gamepath = scriptdir.."game"..DIR_DELIM
 local commonpath = scriptdir.."common"..DIR_DELIM
 local asyncpath = scriptdir.."async"..DIR_DELIM
 
+--dofile(scriptdir.."profiler.lua") --TODO: repair me
+--[[ too buggy
 dofile(commonpath.."strict.lua")
+]]
 dofile(commonpath.."serialize.lua")
 dofile(commonpath.."misc_helpers.lua")
+
+dofile(scriptdir.."key_value_storage.lua")
 
 if INIT == "game" then
 	dofile(gamepath.."init.lua")
@@ -28,7 +35,7 @@ elseif INIT == "mainmenu" then
 	if mainmenuscript ~= nil and mainmenuscript ~= "" then
 		dofile(mainmenuscript)
 	else
-		dofile(core.get_mainmenu_path()..DIR_DELIM.."init.lua")
+		dofile(core.get_mainmenu_path()..DIR_DELIM.."fm_init.lua")
 	end
 elseif INIT == "async" then
 	dofile(asyncpath.."init.lua")

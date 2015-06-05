@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+	<id type="desktop">magichet.desktop</id>
+	<metadata_license>CC-BY-SA-3.0</metadata_license>
+	<project_license>GPL-3 and CC-BY-SA-3.0 and MIT and Apache-2.0</project_license>
+	<name>Magichet</name>
+	<summary>Multiplayer almost-infinite-world block sandbox game</summary>
+	<description>
+		<p>
+			Magichet is a block sandbox game and game engine.
+		</p><p>
+			Players can create and destroy various types of blocks in a
+			three-dimensional open world. This allows forming structures in
+			every possible creation, on multiplayer servers or in singleplayer.
+		</p><p>
+			Magichet is designed to be simple, stable, and portable.
+			It is lightweight enough to run on fairly old hardware.
+		</p><p>
+			Magichet has many features, including:
+		</p>
+		<ul>
+			<li>Ability to walk around, dig, and build in a near-infinite voxel world</li>
+			<li>Crafting of items from raw materials</li>
+			<li>Fast and able to run on old and slow hardware</li>
+			<li>A simple modding API that supports many additions and modifications to the game</li>
+			<li>Multiplayer support via servers hosted by users</li>
+			<li>Beautiful lightning-fast map generator</li>
+		</ul>
+	</description>
+	<screenshots>
+		<screenshot type="default" width="1440" height="851">https://dl-web.dropbox.com/get/Public/mt%20screens/mods/dipping%20water.png?_subject_uid=39772195&w=AAACAH4QmsrHC3o577L_2OuQV_sakNYK66N-hM6DApUx5A&dl=1</screenshot>
+		<screenshot width="1440" height="851">https://dl-web.dropbox.com/get/Public/mt%20screens/mods/shared_chest.png?_subject_uid=39772195&w=AADmEYCDxZ5OavKGMydcEXi2hnVnY4XAekx6p5tmEW6Llg&dl=1</screenshot>
+		<screenshot width="1440" height="851">https://dl-web.dropbox.com/get/Public/mtmods/enchantment.png?_subject_uid=39772195&w=AABgngqDIgX4lWtLK1Cbbu3rZ9gkl5wTX7QB5TuT--dh0w&dl=1</screenshot>
+		<screenshot width="1440" height="851">https://dl-web.dropbox.com/get/Public/mtmods/ghost_realm2.png?_subject_uid=39772195&w=AABGuOFYaKJoOoIbNDfSGS5MKDE8x-u6G6WhhU1hLVMc4g&dl=1</screenshot>
+		<screenshot width="1440" height="851">https://dl-web.dropbox.com/get/Public/mtmods/screenshot_990546455.png?_subject_uid=39772195&w=AAAzNgonQz21VXqqUObCDg6ZUfQQRSpF2SefQ02tsa7oPg&dl=1</screenshot>
+	</screenshots>
+	<url type="homepage">http://4aiman.ucoz.ru/magichet</url>
+	<updatecontact></updatecontact>
+</application>

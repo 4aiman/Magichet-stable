@@ -254,25 +254,25 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 			rect<s32>(m_screensize.X - (0.75*button_size),
 					m_screensize.Y - (2.25*button_size),
 					m_screensize.X, m_screensize.Y - (button_size*1.5)),
-			L"fly", false, SLOW_BUTTON_REPEAT);
+			L"fly", true);
 
 	/* init noclip button */
 	initButton(noclip_id,
 			rect<s32>(m_screensize.X - (0.75*button_size), 2.25*button_size,
 					m_screensize.X, 3*button_size),
-			L"clip", false, SLOW_BUTTON_REPEAT);
+			L"clip", true);
 
 	/* init fast button */
 	initButton(fast_id,
 			rect<s32>(m_screensize.X - (0.75*button_size), 1.5*button_size,
 					m_screensize.X, 2.25*button_size),
-			L"fast", false, SLOW_BUTTON_REPEAT);
+			L"fast", true);
 
 	/* init debug button */
 	initButton(debug_id,
 			rect<s32>(m_screensize.X - (0.75*button_size), 0.75*button_size,
 					m_screensize.X, 1.5*button_size),
-			L"dbg", false, SLOW_BUTTON_REPEAT);
+			L"dbg", true);
 
 	/* init chat button */
 	initButton(chat_id,
@@ -284,13 +284,13 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 	initButton(camera_id,
 			rect<s32>(m_screensize.X - (1.5*button_size), 0,
 					m_screensize.X - (0.75*button_size), 0.75*button_size),
-			L"cam", false, SLOW_BUTTON_REPEAT);
+			L"cam", true);
 
 	/* init rangeselect button */
 	initButton(range_id,
 			rect<s32>(m_screensize.X - (2.25*button_size), 0,
 					m_screensize.X - (1.5*button_size), 0.75*button_size),
-			L"far", false, SLOW_BUTTON_REPEAT);
+			L"far", true);
 }
 
 touch_gui_button_id TouchScreenGUI::getButtonID(s32 x, s32 y)

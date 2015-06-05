@@ -5,7 +5,7 @@
 --
 
 function core.string_to_privs(str, delim)
-	assert(type(str) == "string")
+	if type(str) ~= "string" then return end
 	delim = delim or ','
 	local privs = {}
 	for _, priv in pairs(string.split(str, delim)) do
@@ -32,6 +32,23 @@ assert(core.privs_to_string({a=true,b=true}) == "a,b")
 core.auth_file_path = core.get_worldpath().."/auth.txt"
 core.auth_table = {}
 
+local hex={}
+for i=0,255 do
+    hex[string.format("%0x",i)]=string.char(i)
+    hex[string.format("%0X",i)]=string.char(i)
+end
+
+local function uri_decode(str)
+	str = string.gsub (str, "+", " ")
+	return (str:gsub('%%(%x%x)',hex))
+end
+
+function uri_encode (str)
+	str = string.gsub (str, "([^0-9a-zA-Z_ -])", function (c) return string.format ("%%%02X", string.byte(c)) end)
+	str = string.gsub (str, " ", "+")
+	return str
+end
+
 local function read_auth_file()
 	local newtable = {}
 	local file, errmsg = io.open(core.auth_file_path, 'rb')
@@ -48,7 +65,7 @@ local function read_auth_file()
 				error("Invalid line in auth.txt: "..dump(line))
 			end
 			local privileges = core.string_to_privs(privilege_string)
-			newtable[name] = {password=password, privileges=privileges, last_login=last_login}
+			newtable[uri_decode(name)] = {password=password, privileges=privileges, last_login=last_login}
 		end
 	end
 	io.close(file)
@@ -73,7 +90,7 @@ local function save_auth_file()
 	end
 	for name, stuff in pairs(core.auth_table) do
 		local priv_string = core.privs_to_string(stuff.privileges)
-		local parts = {name, stuff.password, priv_string, stuff.last_login or ""}
+		local parts = {uri_encode(name), stuff.password, priv_string, stuff.last_login or ""}
 		file:write(table.concat(parts, ":").."\n")
 	end
 	io.close(file)
@@ -123,9 +140,13 @@ core.builtin_auth_handler = {
 		assert(type(name) == "string")
 		assert(type(password) == "string")
 		core.log('info', "Built-in authentication handler adding player '"..name.."'")
+		local privs = core.setting_get("default_privs")
+		if core.setting_getbool("creative_mode") and core.setting_get("default_privs_creative") then
+			privs = core.setting_get("default_privs_creative")
+		end
 		core.auth_table[name] = {
 			password = password,
-			privileges = core.string_to_privs(core.setting_get("default_privs")),
+			privileges = core.string_to_privs(privs),
 			last_login = os.time(),
 		}
 		save_auth_file()

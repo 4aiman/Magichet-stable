@@ -4,11 +4,6 @@
 local WARN_INIT = false
 
 
-function core.global_exists(name)
-	return rawget(_G, name) ~= nil
-end
-
-
 local function warn(message)
 	print(os.date("%H:%M:%S: WARNING: ")..message)
 end

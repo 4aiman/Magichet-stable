@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -71,6 +71,9 @@ GUITable::GUITable(gui::IGUIEnvironment *env,
 	m_font = skin->getFont();
 	if (m_font) {
 		m_font->grab();
+	 //   video::IVideoDriver *driver = Environment->getVideoDriver();
+     //	core::dimension2d<u32> screen = driver->getScreenSize();
+        //m_rowheight = screen.Height / 15 * g_settings->getFloat("gui_scaling");
 		m_rowheight = m_font->getDimension(L"A").Height + 4;
 		m_rowheight = MYMAX(m_rowheight, 1);
 	}

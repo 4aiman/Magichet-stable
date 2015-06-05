@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 sapier
 
 This program is free software; you can redistribute it and/or modify
@@ -757,7 +757,7 @@ int ModApiMainMenu::l_get_texturepath_share(lua_State *L)
 int ModApiMainMenu::l_create_dir(lua_State *L) {
 	const char *path	= luaL_checkstring(L, 1);
 
-	if (ModApiMainMenu::isMinetestPath(path)) {
+	if (ModApiMainMenu::isMagichetPath(path)) {
 		lua_pushboolean(L,fs::CreateAllDirs(path));
 		return 1;
 	}
@@ -772,7 +772,7 @@ int ModApiMainMenu::l_delete_dir(lua_State *L)
 
 	std::string absolute_path = fs::RemoveRelativePathComponents(path);
 
-	if (ModApiMainMenu::isMinetestPath(absolute_path)) {
+	if (ModApiMainMenu::isMagichetPath(absolute_path)) {
 		lua_pushboolean(L,fs::RecursiveDelete(absolute_path));
 		return 1;
 	}
@@ -796,8 +796,8 @@ int ModApiMainMenu::l_copy_dir(lua_State *L)
 	std::string absolute_destination = fs::RemoveRelativePathComponents(destination);
 	std::string absolute_source = fs::RemoveRelativePathComponents(source);
 
-	if ((ModApiMainMenu::isMinetestPath(absolute_source)) &&
-			(ModApiMainMenu::isMinetestPath(absolute_destination))) {
+	if ((ModApiMainMenu::isMagichetPath(absolute_source)) &&
+			(ModApiMainMenu::isMagichetPath(absolute_destination))) {
 		bool retval = fs::CopyDir(absolute_source,absolute_destination);
 
 		if (retval && (!keep_source)) {
@@ -822,7 +822,7 @@ int ModApiMainMenu::l_extract_zip(lua_State *L)
 
 	std::string absolute_destination = fs::RemoveRelativePathComponents(destination);
 
-	if (ModApiMainMenu::isMinetestPath(absolute_destination)) {
+	if (ModApiMainMenu::isMagichetPath(absolute_destination)) {
 		fs::CreateAllDirs(absolute_destination);
 
 		io::IFileSystem* fs = engine->m_device->getFileSystem();
@@ -910,7 +910,7 @@ int ModApiMainMenu::l_get_mainmenu_path(lua_State *L)
 }
 
 /******************************************************************************/
-bool ModApiMainMenu::isMinetestPath(std::string path)
+bool ModApiMainMenu::isMagichetPath(std::string path)
 {
 	if (fs::PathStartsWith(path,fs::TempPath()))
 		return true;
@@ -995,7 +995,7 @@ int ModApiMainMenu::l_download_file(lua_State *L)
 	//check path
 	std::string absolute_destination = fs::RemoveRelativePathComponents(target);
 
-	if (ModApiMainMenu::isMinetestPath(absolute_destination)) {
+	if (ModApiMainMenu::isMagichetPath(absolute_destination)) {
 		if (GUIEngine::downloadFile(url,absolute_destination)) {
 			lua_pushboolean(L,true);
 			return 1;

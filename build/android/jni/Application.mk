@@ -1,7 +1,7 @@
 # NDK_TOOLCHAIN_VERSION := clang3.3
 
 APP_PLATFORM := android-9
-APP_MODULES := minetest
+APP_MODULES := magichet
 APP_STL := gnustl_static
 
 APP_CPPFLAGS += -fexceptions

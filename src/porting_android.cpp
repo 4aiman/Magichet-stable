@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2014 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@ void android_main(android_app *app)
 
 	try {
 		app_dummy();
-		char *argv[] = { (char*) "minetest" };
+		char *argv[] = { (char*) "magichet" };
 		main(sizeof(argv) / sizeof(argv[0]), argv);
 		}
 	catch(BaseException e) {
@@ -62,7 +62,7 @@ void android_main(android_app *app)
 	}
 
 	porting::cleanupAndroid();
-	errorstream << "Shutting down minetest." << std::endl;
+	errorstream << "Shutting down magichet." << std::endl;
 	exit(retval);
 }
 
@@ -71,10 +71,10 @@ void android_main(android_app *app)
 /* TODO this doesn't work as expected, no idea why but there's a workaround   */
 /* for it right now */
 extern "C" {
-	JNIEXPORT void JNICALL Java_net_minetest_MtNativeActivity_putMessageBoxResult(
+	JNIEXPORT void JNICALL Java_org_magichet_MtNativeActivity_putMessageBoxResult(
 			JNIEnv * env, jclass thiz, jstring text)
 	{
-		errorstream << "Java_net_minetest_MtNativeActivity_putMessageBoxResult got: "
+		errorstream << "Java_org_magichet_MtNativeActivity_putMessageBoxResult got: "
 				<< std::string((const char*)env->GetStringChars(text,0))
 				<< std::endl;
 	}
@@ -126,7 +126,7 @@ void initAndroid()
 	JavaVM *jvm = app_global->activity->vm;
 	JavaVMAttachArgs lJavaVMAttachArgs;
 	lJavaVMAttachArgs.version = JNI_VERSION_1_6;
-	lJavaVMAttachArgs.name = "MinetestNativeThread";
+	lJavaVMAttachArgs.name = "MagichetNativeThread";
 	lJavaVMAttachArgs.group = NULL;
 #ifdef NDEBUG
 	// This is a ugly hack as arm v7a non debuggable builds crash without this
@@ -138,7 +138,7 @@ void initAndroid()
 		exit(-1);
 	}
 
-	nativeActivity = findClass("net/minetest/minetest/MtNativeActivity");
+	nativeActivity = findClass("org/magichet/magichet/MtNativeActivity");
 	if (nativeActivity == 0) {
 		errorstream <<
 			"porting::initAndroid unable to find java native activity class" <<
@@ -149,7 +149,7 @@ void initAndroid()
 	/* in the start-up code */
 	__android_log_print(ANDROID_LOG_ERROR, PROJECT_NAME,
 			"Initializing GPROF profiler");
-	monstartup("libminetest.so");
+	monstartup("libmagichet.so");
 #endif
 }
 

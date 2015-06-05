@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 sapier
 
 This program is free software; you can redistribute it and/or modify
@@ -572,8 +572,7 @@ bool GUIEngine::downloadFile(std::string url, std::string target)
 /******************************************************************************/
 void GUIEngine::setTopleftText(std::string append)
 {
-	std::wstring toset = narrow_to_wide(std::string(PROJECT_NAME_C " ") +
-			g_version_hash);
+	std::wstring toset = narrow_to_wide(std::string(""));
 
 	if (append != "")
 	{

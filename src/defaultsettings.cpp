@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -92,9 +92,9 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("pause_fps_max", "20");
 	// A bit more than the server will send around the player, to make fog blend well
 	settings->setDefault("viewing_range_nodes_max", "240");
-	settings->setDefault("viewing_range_nodes_min", "35");
-	settings->setDefault("screenW", "800");
-	settings->setDefault("screenH", "600");
+	settings->setDefault("viewing_range_nodes_min", "25");
+	settings->setDefault("screenW", "854");
+	settings->setDefault("screenH", "480");
 	settings->setDefault("fullscreen", "false");
 	settings->setDefault("fullscreen_bpp", "24");
 	settings->setDefault("fsaa", "0");
@@ -123,8 +123,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("invert_mouse", "false");
 	settings->setDefault("enable_clouds", "true");
 	settings->setDefault("screenshot_path", ".");
-	settings->setDefault("view_bobbing_amount", "1.0");
-	settings->setDefault("fall_bobbing_amount", "0.0");
+	settings->setDefault("view_bobbing_amount", "2.5");
+	settings->setDefault("fall_bobbing_amount", "1.0");
 	settings->setDefault("enable_3d_clouds", "true");
 	settings->setDefault("cloud_height", "120");
 	settings->setDefault("cloud_radius", "12");
@@ -138,7 +138,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("crosshair_alpha", "255");
 	settings->setDefault("hud_scaling", "1.0");
 	settings->setDefault("gui_scaling", "1.0");
-	settings->setDefault("gui_scaling_filter", "false");
+	settings->setDefault("gui_scaling_filter", "true");
 	settings->setDefault("gui_scaling_filter_txr2img", "true");
 	settings->setDefault("mouse_sensitivity", "0.2");
 	settings->setDefault("enable_sound", "true");
@@ -183,7 +183,7 @@ void set_default_settings(Settings *settings)
 
 	settings->setDefault("serverlist_url", "servers.minetest.net");
 	settings->setDefault("serverlist_file", "favoriteservers.txt");
-	settings->setDefault("server_announce", "false");
+	settings->setDefault("server_announce", "true");
 	settings->setDefault("server_url", "");
 	settings->setDefault("server_address", "");
 	settings->setDefault("server_name", "");
@@ -191,7 +191,7 @@ void set_default_settings(Settings *settings)
 
 #if USE_FREETYPE
 	settings->setDefault("freetype", "true");
-	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "liberationsans.ttf"));
+	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "pixel.ttf"));
 	settings->setDefault("font_shadow", "1");
 	settings->setDefault("font_shadow_alpha", "128");
 	settings->setDefault("mono_font_path", porting::getDataPath("fonts" DIR_DELIM "liberationmono.ttf"));
@@ -224,7 +224,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("max_packets_per_iteration","1024");
 	settings->setDefault("port", "30000");
 	settings->setDefault("bind_address", "");
-	settings->setDefault("default_game", "minetest");
+	settings->setDefault("default_game", "magichet");
 	settings->setDefault("motd", "");
 	settings->setDefault("max_users", "15");
 	settings->setDefault("strict_protocol_version_checking", "false");
@@ -322,7 +322,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("screenH", "0");
 	settings->setDefault("enable_shaders", "false");
 	settings->setDefault("fullscreen", "true");
-	settings->setDefault("enable_particles", "false");
+	settings->setDefault("enable_particles", "true");
 	settings->setDefault("video_driver", "ogles1");
 	settings->setDefault("touchtarget", "true");
 	settings->setDefault("TMPFolder","/sdcard/" PROJECT_NAME_C "/tmp/");
@@ -344,7 +344,7 @@ void set_default_settings(Settings *settings)
 		settings->setDefault("hud_scaling", "0.6");
 	}
 	else if (x_inches < 4.5) {
-		settings->setDefault("hud_scaling", "0.7");
+		settings->setDefault("hud_scaling", "0.6");
 	}
 	settings->setDefault("curl_verify_cert","false");
 #else

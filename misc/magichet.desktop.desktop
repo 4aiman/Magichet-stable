@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Magichet
+GenericName=Minecraft+
+Comment=Multiplayer infinite-world block sandbox
+Exec=magichet
+Icon=magichet
+Terminal=false
+Type=Application
+Categories=Game;
+StartupNotify=false
+Keywords=sandbox;world;mining;crafting;blocks;nodes;multiplayer;adventure;
+Name[C]=magichet.desktop

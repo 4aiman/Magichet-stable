@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 PilzAdam <pilzadam@minetest.net>
 
 This program is free software; you can redistribute it and/or modify

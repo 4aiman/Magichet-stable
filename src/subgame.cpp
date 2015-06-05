@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -31,9 +31,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	#include "client/tile.h" // getImagePath
 #endif
 
-bool getGameMinetestConfig(const std::string &game_path, Settings &conf)
+bool getGameMagichetConfig(const std::string &game_path, Settings &conf)
 {
-	std::string conf_path = game_path + DIR_DELIM + "minetest.conf";
+	std::string conf_path = game_path + DIR_DELIM + "magichet.conf";
 	return conf.readConfigFile(conf_path.c_str());
 }
 
@@ -194,7 +194,7 @@ std::vector<SubgameSpec> getAvailableGames()
 	return specs;
 }
 
-#define LEGACY_GAMEID "minetest"
+#define LEGACY_GAMEID "magichet"
 
 bool getWorldExists(const std::string &world_path)
 {
@@ -219,7 +219,7 @@ std::string getWorldGameId(const std::string &world_path, bool can_be_legacy)
 		return "";
 	// The "mesetint" gameid has been discarded
 	if(conf.get("gameid") == "mesetint")
-		return "minetest";
+		return "magichet";
 	return conf.get("gameid");
 }
 
@@ -275,7 +275,7 @@ bool loadGameConfAndInitWorld(const std::string &path, const SubgameSpec &gamesp
 	g_settings->clearDefaults();
 	set_default_settings(g_settings);
 	Settings game_defaults;
-	getGameMinetestConfig(gamespec.path, game_defaults);
+	getGameMagichetConfig(gamespec.path, game_defaults);
 	override_default_settings(g_settings, &game_defaults);
 
 	infostream << "Initializing world at " << path << std::endl;

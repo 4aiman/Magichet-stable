@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 Copyright (C) 2010-2013 blue42u, Jonathon Anderson <anderjon@umail.iu.edu>
 Copyright (C) 2010-2013 kwolekr, Ryan Kwolek <kwolekr@minetest.net>

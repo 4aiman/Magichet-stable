@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 sapier
 
 This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@ private:
 	 * @param path path to check
 	 * @return true/false
 	 */
-	static bool isMinetestPath(std::string path);
+	static bool isMagichetPath(std::string path);
 
 	//api calls
 

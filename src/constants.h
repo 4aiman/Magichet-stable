@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -109,11 +109,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 // TODO: implement dpi-based scaling for windows and remove this hack
 #if defined(_WIN32)
-	#define TTF_DEFAULT_FONT_SIZE   (18)
+	#define TTF_DEFAULT_FONT_SIZE   (12)
 #else
-	#define TTF_DEFAULT_FONT_SIZE	(15)
+	#define TTF_DEFAULT_FONT_SIZE	(12)
 #endif
-#define DEFAULT_FONT_SIZE       (10)
+#define DEFAULT_FONT_SIZE       (12)
 
 #endif
 

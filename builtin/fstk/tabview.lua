@@ -69,7 +69,7 @@ local function get_formspec(self)
 					string.format("size[%f,%f,%s]",tsize.width,tsize.height,
 						dump(self.fixed_size))
 		end
-		formspec = formspec .. self:tab_header()
+		--formspec = formspec .. self:tab_header()
 		formspec = formspec ..
 				self.tablist[self.last_tab_index].get_formspec(
 					self,

@@ -4,6 +4,31 @@
 -- Falling stuff
 --
 
+function node_drop(np, remove_fast)
+			local n2 = minetest.get_node(np)
+			-- If it's not air or liquid, remove node and replace it with
+			-- it's drops
+			if n2.name ~= "air" and (not core.registered_nodes[n2.name] or
+					core.registered_nodes[n2.name].liquidtype == "none") then
+				core.remove_node(np, remove_fast)
+				if core.registered_nodes[n2.name].buildable_to == false then
+					-- Add dropped items
+					local drops = core.get_node_drops(n2.name, "")
+					local _, dropped_item
+					for _, dropped_item in ipairs(drops) do
+						core.add_item(np, dropped_item)
+					end
+				end
+				-- Run script hook
+				local _, callback
+				for _, callback in ipairs(core.registered_on_dignodes) do
+					callback(np, n2, nil)
+				end
+			end
+end
+
+local remove_fast = 0
+
 core.register_entity(":__builtin:falling_node", {
 	initial_properties = {
 		physical = true,
@@ -47,6 +72,7 @@ core.register_entity(":__builtin:falling_node", {
 	end,
 
 	on_step = function(self, dtime)
+		if dtime > 0.2 then remove_fast = 2 else remove_fast = 0 end
 		-- Set gravity
 		self.object:setacceleration({x=0, y=-10, z=0})
 		-- Turn to actual sand when collides to ground or just move
@@ -59,7 +85,7 @@ core.register_entity(":__builtin:falling_node", {
 				(bcd.walkable or
 				(core.get_item_group(self.node.name, "float") ~= 0 and
 				bcd.liquidtype ~= "none")) then
-			if bcd and bcd.leveled and
+			if bcd and bcd.leveled and bcd.leveled > 0 and
 					bcn.name == self.node.name then
 				local addlevel = self.node.level
 				if addlevel == nil or addlevel <= 0 then
@@ -72,31 +98,14 @@ core.register_entity(":__builtin:falling_node", {
 			elseif bcd and bcd.buildable_to and
 					(core.get_item_group(self.node.name, "float") == 0 or
 					bcd.liquidtype == "none") then
-				core.remove_node(bcp)
+				core.remove_node(bcp, remove_fast)
 				return
 			end
 			local np = {x=bcp.x, y=bcp.y+1, z=bcp.z}
 			-- Check what's here
 			local n2 = core.get_node(np)
-			-- If it's not air or liquid, remove node and replace it with
-			-- it's drops
-			if n2.name ~= "air" and (not core.registered_nodes[n2.name] or
-					core.registered_nodes[n2.name].liquidtype == "none") then
-				core.remove_node(np)
-				if core.registered_nodes[n2.name].buildable_to == false then
-					-- Add dropped items
-					local drops = core.get_node_drops(n2.name, "")
-					local _, dropped_item
-					for _, dropped_item in ipairs(drops) do
-						core.add_item(np, dropped_item)
-					end
-				end
-				-- Run script hook
-				local _, callback
-				for _, callback in ipairs(core.registered_on_dignodes) do
-					callback(np, n2, nil)
-				end
-			end
+		-- remove node and replace it with it's drops
+				node_drop(np, remove_fast)
 			-- Create node and remove entity
 			core.add_node(np, self.node)
 			self.object:remove()
@@ -113,12 +122,13 @@ core.register_entity(":__builtin:falling_node", {
 
 function spawn_falling_node(p, node)
 	local obj = core.add_entity(p, "__builtin:falling_node")
+	if not obj then return end
 	obj:get_luaentity():set_node(node)
 end
 
 function drop_attached_node(p)
 	local nn = core.get_node(p).name
-	core.remove_node(p)
+	core.remove_node(p, remove_fast)
 	for _,item in ipairs(core.get_node_drops(nn, "")) do
 		local pos = {
 			x = p.x + math.random()/2 - 0.25,
@@ -179,7 +189,7 @@ function nodeupdate_single(p, delay)
 				core.after(0.1, nodeupdate_single, {x=p.x, y=p.y, z=p.z}, false)
 			else
 				n.level = core.get_node_level(p)
-				core.remove_node(p)
+				core.remove_node(p, remove_fast)
 				spawn_falling_node(p, n)
 				nodeupdate(p)
 			end

@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2010-2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -1668,7 +1668,7 @@ Game::Game() :
 
 
 /****************************************************************************
- MinetestApp Public
+ MagichetApp Public
  ****************************************************************************/
 
 Game::~Game()
@@ -4038,7 +4038,7 @@ void Game::updateGui(float *statustext_time, const RunStats &stats,
 
 		std::ostringstream os(std::ios_base::binary);
 		os << std::fixed
-		   << PROJECT_NAME_C " " << g_version_hash
+		  // << PROJECT_NAME_C " " << g_version_hash
 		   << " FPS = " << fps
 		   << " (R: range_all=" << draw_control->range_all << ")"
 		   << std::setprecision(0)
@@ -4054,7 +4054,7 @@ void Game::updateGui(float *statustext_time, const RunStats &stats,
 		guitext->setVisible(true);
 	} else if (flags.show_hud || flags.show_chat) {
 		std::ostringstream os(std::ios_base::binary);
-		os << PROJECT_NAME_C " " << g_version_hash;
+		os << " ";
 		guitext->setText(narrow_to_wide(os.str()).c_str());
 		guitext->setVisible(true);
 	} else {

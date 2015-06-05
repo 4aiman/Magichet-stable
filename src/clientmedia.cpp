@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -591,7 +591,7 @@ bool ClientMediaDownloader::checkAndLoad(
 
 
 /*
-	Minetest Hashset File Format
+	Magichet Hashset File Format
 
 	All values are stored in big-endian byte order.
 	[u32] signature: 'MTHS'

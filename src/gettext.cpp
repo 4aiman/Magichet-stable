@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2013 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
@@ -150,7 +150,7 @@ void init_gettext(const char *path, const std::string &configured_language) {
 			PROCESS_INFORMATION processinfo;
 			memset(&startupinfo, 0, sizeof(startupinfo));
 			memset(&processinfo, 0, sizeof(processinfo));
-			errorstream << "MSVC localization workaround active restating minetest in new environment!" << std::endl;
+			errorstream << "MSVC localization workaround active restating magichet in new environment!" << std::endl;
 
 			std::string parameters = "";
 

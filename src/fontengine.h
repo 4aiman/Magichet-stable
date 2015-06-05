@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2010-2014 sapier <sapier at gmx dot net>
 
 This program is free software; you can redistribute it and/or modify

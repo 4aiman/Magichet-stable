@@ -1,5 +1,5 @@
 /*
-Minetest
+Magichet
 Copyright (C) 2014 celeron55, Perttu Ahola <celeron55@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
