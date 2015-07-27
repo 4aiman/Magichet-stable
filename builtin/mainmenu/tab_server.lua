@@ -30,12 +30,12 @@ local function get_formspec(tabview, name, tabdata)
             "image_button[4,8.7;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;start_server;".. fgettext("Play") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
             "image_button[7.8,8.7;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_create;".. fgettext("New") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
 
-            "image_button[4,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[6.53,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[9.07,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[4,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+--            "image_button[6.53,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[7.8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
             "label[7,1.5;" .. fgettext("Select World:") .. "]" ..
 
-            "checkbox[12,8.70;cb_creative_mode;" .. fgettext("Creative Mode") .. ";" .. dump(core.setting_getbool("creative_mode")) .. "]" ..
+--            "checkbox[12,8.70;cb_creative_mode;" .. fgettext("Creative Mode") .. ";" .. dump(core.setting_getbool("creative_mode")) .. "]" ..
             --"checkbox[1000,9.20;cb_enable_damage;" .. fgettext("Enable Damage") .. ";" .. dump(core.setting_getbool("enable_damage")) .. "]" ..
             "checkbox[12,9.50;cb_server_announce;" .. fgettext("Public") .. ";" .. dump(core.setting_getbool("server_announce")) .. "]" ..
             "label[0.2,8.55;" .. fgettext("Name/Password") .. "]" ..

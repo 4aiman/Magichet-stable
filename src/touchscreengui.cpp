@@ -189,19 +189,20 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 	draw control pad
 	0 1 2
 	3 4 5
-	for now only 0, 1, 2, and 4 are used
+	6 7 8
+	for now only 1, 3, 5, and 7 are used
 	*/
 	int number = 0;
-	for (int y = 0; y < 2; ++y)
+	for (int y = 0; y < 3; ++y)
 		for (int x = 0; x < 3; ++x, ++number) {
 			rect<s32> button_rect(
-					x * button_size, m_screensize.Y - button_size * (2 - y),
-					(x + 1) * button_size, m_screensize.Y - button_size * (1 - y)
+					x * button_size, m_screensize.Y - button_size * (3 - y),
+					(x + 1) * button_size, m_screensize.Y - button_size * (2 - y)
 			);
 			touch_gui_button_id id = after_last_element_id;
 			std::wstring caption;
 			switch (number) {
-			case 0:
+			case 3:
 				id = left_id;
 				caption = L"<";
 				break;
@@ -209,14 +210,18 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 				id = forward_id;
 				caption = L"^";
 				break;
-			case 2:
+			case 5:
 				id = right_id;
 				caption = L">";
 				break;
-			case 4:
+			case 7:
 				id = backward_id;
 				caption = L"v";
 				break;
+		/*	case 4:
+				id = jump_id;
+				caption = L"x";
+				break; */
 			}
 			if (id != after_last_element_id) {
 				initButton(id, button_rect, caption, false);
@@ -225,8 +230,8 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 
 	/* init inventory button */
 	initButton(inventory_id,
-			rect<s32>(0, m_screensize.Y - (button_size/2),
-					(button_size/2), m_screensize.Y), L"inv", true);
+			rect<s32>(m_screensize.X - button_size, m_screensize.Y - button_size,
+					m_screensize.X, m_screensize.Y), L"inv", true);
 
 	/* init drop button */
 	initButton(drop_id,
@@ -235,17 +240,17 @@ void TouchScreenGUI::init(ISimpleTextureSource* tsrc, float density)
 
 	/* init jump button */
 	initButton(jump_id,
-			rect<s32>(m_screensize.X-(1.75*button_size),
-					m_screensize.Y - (0.5*button_size),
-					m_screensize.X-(0.25*button_size),
+			rect<s32>(m_screensize.X-(2*button_size)-20,
+					m_screensize.Y - button_size,
+					m_screensize.X-(1*button_size)-20,
 					m_screensize.Y),
 			L"x",false);
-
+     
 	/* init crunch button */
 	initButton(crunch_id,
-			rect<s32>(m_screensize.X-(3.25*button_size),
-					m_screensize.Y - (0.5*button_size),
-					m_screensize.X-(1.75*button_size),
+			rect<s32>(m_screensize.X-(3*button_size)-20,
+					m_screensize.Y - button_size,
+					m_screensize.X-(2*button_size)-20,
 					m_screensize.Y),
 			L"H",false);
 

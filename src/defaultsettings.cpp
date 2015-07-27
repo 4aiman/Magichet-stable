@@ -108,7 +108,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("new_style_water", "false");
 	settings->setDefault("new_style_leaves", "true");
 	settings->setDefault("connected_glass", "false");
-	settings->setDefault("smooth_lighting", "true");
+	settings->setDefault("smooth_lighting", "false");
 	settings->setDefault("display_gamma", "1.8");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("shader_path", "");
@@ -125,7 +125,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("screenshot_path", ".");
 	settings->setDefault("view_bobbing_amount", "2.5");
 	settings->setDefault("fall_bobbing_amount", "1.0");
-	settings->setDefault("enable_3d_clouds", "true");
+	settings->setDefault("enable_3d_clouds", "false");
 	settings->setDefault("cloud_height", "120");
 	settings->setDefault("cloud_radius", "12");
 	settings->setDefault("menu_clouds", "true");
@@ -138,12 +138,12 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("crosshair_alpha", "255");
 	settings->setDefault("hud_scaling", "1.0");
 	settings->setDefault("gui_scaling", "1.0");
-	settings->setDefault("gui_scaling_filter", "true");
-	settings->setDefault("gui_scaling_filter_txr2img", "true");
+	settings->setDefault("gui_scaling_filter", "false");
+	settings->setDefault("gui_scaling_filter_txr2img", "false");
 	settings->setDefault("mouse_sensitivity", "0.2");
 	settings->setDefault("enable_sound", "true");
 	settings->setDefault("sound_volume", "0.8");
-	settings->setDefault("desynchronize_mapblock_texture_animation", "true");
+	settings->setDefault("desynchronize_mapblock_texture_animation", "false");
 	settings->setDefault("selectionbox_width","2");
 	settings->setDefault("hud_hotbar_max_width","1.0");
 	settings->setDefault("enable_local_map_saving", "false");
@@ -169,7 +169,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("enable_waving_leaves", "false");
 	settings->setDefault("enable_waving_plants", "false");
 	settings->setDefault("ambient_occlusion_gamma", "2.2");
-	settings->setDefault("enable_shaders", "true");
+	settings->setDefault("enable_shaders", "false");
 	settings->setDefault("repeat_rightclick_time", "0.25");
 	settings->setDefault("enable_particles", "true");
 	settings->setDefault("enable_mesh_cache", "true");
@@ -177,13 +177,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("curl_timeout", "5000");
 	settings->setDefault("curl_parallel_limit", "8");
 	settings->setDefault("curl_file_download_timeout", "300000");
-	settings->setDefault("curl_verify_cert", "true");
+	settings->setDefault("curl_verify_cert", "false");
 
 	settings->setDefault("enable_remote_media_server", "true");
 
 	settings->setDefault("serverlist_url", "servers.minetest.net");
 	settings->setDefault("serverlist_file", "favoriteservers.txt");
-	settings->setDefault("server_announce", "true");
+	settings->setDefault("server_announce", "false");
 	settings->setDefault("server_url", "");
 	settings->setDefault("server_address", "");
 	settings->setDefault("server_name", "");
@@ -237,7 +237,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("player_transfer_distance", "0");
 	settings->setDefault("enable_pvp", "true");
 	settings->setDefault("disallow_empty_password", "false");
-	settings->setDefault("disable_anticheat", "false");
+	settings->setDefault("disable_anticheat", "true");
 	settings->setDefault("enable_rollback_recording", "false");
 #ifdef NDEBUG
 	settings->setDefault("deprecated_lua_api_handling", "legacy");

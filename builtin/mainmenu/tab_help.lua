@@ -28,7 +28,7 @@ tab_help = {
                                 "box[-100,-10;200,12;#999999]" ..
 
                                 "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                                "label[3.5,9.75;Magichet 1.0 (based on FM " .. core.get_version() .. ")]" ..
+                                "label[3.5,9.75;Magichet 1.1 (" .. core.get_version() .. ")]" ..
                                 "image[0.25,9;2,2;"..core.formspec_escape(logofile).."]"..
 
                                 "textlist[0,2;15.8,6.25;list_help;" ..

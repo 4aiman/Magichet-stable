@@ -71,11 +71,11 @@ GUITable::GUITable(gui::IGUIEnvironment *env,
 	m_font = skin->getFont();
 	if (m_font) {
 		m_font->grab();
-	 //   video::IVideoDriver *driver = Environment->getVideoDriver();
-     //	core::dimension2d<u32> screen = driver->getScreenSize();
-        //m_rowheight = screen.Height / 15 * g_settings->getFloat("gui_scaling");
-		m_rowheight = m_font->getDimension(L"A").Height + 4;
-		m_rowheight = MYMAX(m_rowheight, 1);
+	    video::IVideoDriver *driver = Environment->getVideoDriver();
+     	core::dimension2d<u32> screen = driver->getScreenSize();
+        m_rowheight = screen.Height / 15 * g_settings->getFloat("gui_scaling");
+		//m_rowheight = m_font->getDimension(L"A").Height + 4;
+		//m_rowheight = MYMAX(m_rowheight, 1);
 	}
 
 	const s32 s = skin->getSize(gui::EGDS_SCROLLBAR_SIZE);
@@ -97,7 +97,7 @@ GUITable::GUITable(gui::IGUIEnvironment *env,
 	updateAbsolutePosition();
 
 	core::rect<s32> relative_rect = m_scrollbar->getRelativePosition();
-	s32 width = (relative_rect.getWidth()/(2.0/3.0)) * porting::getDisplayDensity() *
+	s32 width = (relative_rect.getWidth()/(1.0/3.0)) * porting::getDisplayDensity() *
 			g_settings->getFloat("gui_scaling");
 	m_scrollbar->setRelativePosition(core::rect<s32>(
 			relative_rect.LowerRightCorner.X-width,relative_rect.UpperLeftCorner.Y,

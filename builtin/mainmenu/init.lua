@@ -77,10 +77,10 @@ local function get_formspec2(tabview, name, tabdata)
     local ydiv = si.window_height/5.2
     local xdiv = si.window_width/12.5
     local ratio = xdiv/ydiv
---    print(xdiv..' x '..ydiv..' = '..ratio)
+    print(xdiv..' x '..ydiv..' = '..ratio)
 
     math.randomseed(os.time())
-    local rnd = 'image[6,0.5;9,1.5;'..mm_texture.basetexturedir..'ad_label'..tostring(math.random(1,17))..'.png]'
+    local rnd = 'image['.. 12*ratio ..','.. 1 .. ';6,0.5;'..mm_texture.basetexturedir..'ad_label'..tostring(math.random(1,14))..'.png]'
 
     return retval .. rnd
 end

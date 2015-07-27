@@ -109,11 +109,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 // TODO: implement dpi-based scaling for windows and remove this hack
 #if defined(_WIN32)
-	#define TTF_DEFAULT_FONT_SIZE   (12)
+	#define TTF_DEFAULT_FONT_SIZE   (10)
 #else
-	#define TTF_DEFAULT_FONT_SIZE	(12)
+	#define TTF_DEFAULT_FONT_SIZE	(10)
 #endif
-#define DEFAULT_FONT_SIZE       (12)
+#define DEFAULT_FONT_SIZE       (10)
 
 #endif
 

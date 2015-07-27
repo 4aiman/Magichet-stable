@@ -226,13 +226,14 @@ local function formspec(tabview, name, tabdata)
                 "image_button[0,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_change_keys;".. fgettext("Change keys") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"--..
 --                "image_button[3.75,5;3.88,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
         else
-                --tab_string = tab_string ..
+                tab_string = tab_string ..
 --                "image_button[3.75,5;3.88,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+
+                "image_button[4,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..mm_texture.basetexturedir..
+                "menu_button_b.png]"
         end
 
         tab_string = tab_string ..
-        "image_button[4,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..mm_texture.basetexturedir..
-        "menu_button_b.png]"..
         "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_credits;".. fgettext("Credits") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
         "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
 

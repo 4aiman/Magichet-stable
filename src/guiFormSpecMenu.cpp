@@ -236,28 +236,27 @@ GUITable* GUIFormSpecMenu::getTable(std::wstring tablename)
 	return 0;
 }
 
-std::vector<std::string> split(const std::string &s, char delim) {
+static std::vector<std::string> split(const std::string &s, char delim)
+{
 	std::vector<std::string> tokens;
 
 	std::string current = "";
 	bool last_was_escape = false;
-	for(unsigned int i=0; i < s.size(); i++) {
+	for (unsigned int i = 0; i < s.size(); i++) {
+		char si = s.c_str()[i];
 		if (last_was_escape) {
 			current += '\\';
-			current += s.c_str()[i];
+			current += si;
 			last_was_escape = false;
-		}
-		else {
-			if (s.c_str()[i] == delim) {
+		} else {
+			if (si == delim) {
 				tokens.push_back(current);
 				current = "";
 				last_was_escape = false;
-			}
-			else if (s.c_str()[i] == '\\'){
+			} else if (si == '\\') {
 				last_was_escape = true;
-			}
-			else {
-				current += s.c_str()[i];
+			} else {
+				current += si;
 				last_was_escape = false;
 			}
 		}
@@ -1952,7 +1951,7 @@ void GUIFormSpecMenu::regenerateGui(v2u32 screensize)
 
 		mydata.size = v2s32(
 			padding.X*2+spacing.X*(mydata.invsize.X-1.0)+imgsize.X,
-			padding.Y*2+spacing.Y*(mydata.invsize.Y-1.0)+imgsize.Y + m_btn_height*2.0/3.0
+			padding.Y*2+spacing.Y*(mydata.invsize.Y-1.0)+imgsize.Y + m_btn_height*1.0/3.0
 		);
 		DesiredRect = mydata.rect = core::rect<s32>(
 				mydata.screensize.X/2 - mydata.size.X/2 + offset.X,

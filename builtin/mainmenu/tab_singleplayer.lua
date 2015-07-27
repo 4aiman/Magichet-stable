@@ -85,9 +85,9 @@ local function get_formspec(tabview, name, tabdata)
             "image_button[4,4.05;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;play;".. fgettext("Play") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
             "image_button[7.8,4.05;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_create;".. fgettext("New") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
 
-            "image_button[4,4.8;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[6.53,4.8;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[9.07,4.8;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[4,4.8;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            --"image_button[6.53,4.8;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[7.8,4.8;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
 
             "label[4,-0.25;".. fgettext("Select World:") .. "]"..
             "checkbox[0.25,0.25;cb_creative_mode;".. fgettext("Creative Mode") .. ";" ..
