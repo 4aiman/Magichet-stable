@@ -25,6 +25,11 @@ LOCAL_SRC_FILES := deps/freetype2-android/Android/obj/local/$(TARGET_ARCH_ABI)/l
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := iconv
+LOCAL_SRC_FILES := deps/libiconv/obj/local/$(TARGET_ARCH_ABI)/libiconv.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := openal
 LOCAL_SRC_FILES := deps/openal-soft/libs/$(TARGET_LIBDIR)/libopenal.so
 include $(PREBUILT_SHARED_LIBRARY)
@@ -97,6 +102,7 @@ LOCAL_C_INCLUDES :=                               \
 		jni/src/json                              \
 		jni/src/cguittfont                        \
 		deps/irrlicht/include                     \
+		deps/libiconv/include                     \
 		deps/freetype2-android/include            \
 		deps/curl/include                         \
 		deps/openal-soft/jni/OpenAL/include       \
@@ -106,6 +112,7 @@ LOCAL_C_INCLUDES :=                               \
 		deps/sqlite/
 
 LOCAL_SRC_FILES :=                                \
+		jni/src/areastore.cpp                     \
 		jni/src/ban.cpp                           \
 		jni/src/camera.cpp                        \
 		jni/src/cavegen.cpp                       \
@@ -153,6 +160,7 @@ LOCAL_SRC_FILES :=                                \
 		jni/src/httpfetch.cpp                     \
 		jni/src/hud.cpp                           \
 		jni/src/imagefilters.cpp                  \
+		jni/src/intlGUIEditBox.cpp                \
 		jni/src/inventory.cpp                     \
 		jni/src/inventorymanager.cpp              \
 		jni/src/itemdef.cpp                       \
@@ -176,6 +184,7 @@ LOCAL_SRC_FILES :=                                \
 		jni/src/mg_decoration.cpp                 \
 		jni/src/mg_ore.cpp                        \
 		jni/src/mg_schematic.cpp                  \
+		jni/src/minimap.cpp                       \
 		jni/src/mods.cpp                          \
 		jni/src/nameidmapping.cpp                 \
 		jni/src/nodedef.cpp                       \
@@ -275,6 +284,7 @@ LOCAL_SRC_FILES +=                                \
 		jni/src/script/cpp_api/s_player.cpp       \
 		jni/src/script/cpp_api/s_security.cpp     \
 		jni/src/script/cpp_api/s_server.cpp       \
+		jni/src/script/lua_api/l_areastore.cpp    \
 		jni/src/script/lua_api/l_base.cpp         \
 		jni/src/script/lua_api/l_craft.cpp        \
 		jni/src/script/lua_api/l_env.cpp          \
@@ -346,7 +356,7 @@ LOCAL_SRC_FILES +=                                \
 LOCAL_SRC_FILES += jni/src/json/jsoncpp.cpp
 
 LOCAL_SHARED_LIBRARIES := openal ogg vorbis gmp
-LOCAL_STATIC_LIBRARIES := Irrlicht freetype curl ssl crypto android_native_app_glue $(PROFILER_LIBS)
+LOCAL_STATIC_LIBRARIES := Irrlicht iconv freetype curl ssl crypto android_native_app_glue $(PROFILER_LIBS)
 
 ifeq ($(HAVE_LEVELDB), 1)
 	LOCAL_STATIC_LIBRARIES += LevelDB

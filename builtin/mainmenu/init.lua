@@ -67,8 +67,12 @@ local function get_formspec2(tabview, name, tabdata)
     local retval = ""
     retval = retval .. "bgcolor[#00000000;false]"
     retval = retval .. "image_button[2.5,3.4;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_multiplayer;" .. fgettext("Multiplayer") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-    retval = retval .. "image_button[2.5,4.8;6,1;"  ..mm_texture.basetexturedir.."menu_button.png;btn_show_options;"..      fgettext("Options") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-    retval = retval .. "image_button[8.5,4.8;1,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_help;?;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+    retval = retval .. "image_button[2.5,4.8;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_options;"..      fgettext("Options") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+    if PLATFORM=="Android" then
+       retval = retval .. "image_button[8.5,4.8;1,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_help;?;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+    end
+    -- modstore (broken)
+    --retval = retval .. "image_button[7.5,4.8;1,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_modstore;M;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
     retval = retval .. "image_button[2.5,6.2;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_exit;".. fgettext("Exit") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
     retval = retval .. "image_button[2.5,2.0;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_singleplayer;".. fgettext("Singleplayer") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
 
@@ -77,10 +81,10 @@ local function get_formspec2(tabview, name, tabdata)
     local ydiv = si.window_height/5.2
     local xdiv = si.window_width/12.5
     local ratio = xdiv/ydiv
-    print(xdiv..' x '..ydiv..' = '..ratio)
+--    print(xdiv..' x '..ydiv..' = '..ratio)
 
     math.randomseed(os.time())
-    local rnd = 'image['.. 12*ratio ..','.. 1 .. ';6,0.5;'..mm_texture.basetexturedir..'ad_label'..tostring(math.random(1,14))..'.png]'
+    local rnd = 'image[6,0.5;9,1.5;'..mm_texture.basetexturedir..'ad_label'..tostring(math.random(1,17))..'.png]'
 
     return retval .. rnd
 end
@@ -93,6 +97,7 @@ local function main_button_handler2(tabview, fields, name, tabdata)
     if fields["btn_show_multiplayer"]  then  index = "multiplayer"  end
     if fields["btn_show_options"]      then  index = "settings"     end
     if fields["btn_show_help"]         then  index = "help"         end
+    if fields["btn_show_modstore"]     then  index = "mods"         end
     if fields["btn_exit"] then core.close() end
 
     if index == '' then return end
@@ -107,6 +112,7 @@ local function main_button_handler2(tabview, fields, name, tabdata)
         dlg:set_parent(tabview)
         tabview:hide()
         dlg:show()
+        asyncOnlineFavourites()
         return dlg
        end
     end

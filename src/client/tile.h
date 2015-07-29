@@ -31,6 +31,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "util/numeric.h"
 
 class IGameDef;
+struct TileSpec;
+struct TileDef;
 
 /*
 	tile.{h,cpp}: Texture handling stuff.
@@ -110,6 +112,9 @@ public:
 	virtual video::ITexture* generateTextureFromMesh(
 			const TextureFromMeshParams &params)=0;
 	virtual video::ITexture* getNormalTexture(const std::string &name)=0;
+	virtual video::SColor getTextureAverageColor(const std::string &name)=0;
+	virtual video::ITexture *getShaderFlagsTexture(bool normamap_present,
+			bool tileable_vertical, bool tileable_horizontal)=0;
 };
 
 class IWritableTextureSource : public ITextureSource
@@ -131,6 +136,9 @@ public:
 	virtual void insertSourceImage(const std::string &name, video::IImage *img)=0;
 	virtual void rebuildImagesAndTextures()=0;
 	virtual video::ITexture* getNormalTexture(const std::string &name)=0;
+	virtual video::SColor getTextureAverageColor(const std::string &name)=0;
+	virtual video::ITexture *getShaderFlagsTexture(bool normamap_present,
+			bool tileable_vertical, bool tileable_horizontal)=0;
 };
 
 IWritableTextureSource* createTextureSource(IrrlichtDevice *device);
@@ -170,12 +178,14 @@ struct FrameSpec
 	FrameSpec():
 		texture_id(0),
 		texture(NULL),
-		normal_texture(NULL)
+		normal_texture(NULL),
+		flags_texture(NULL)
 	{
 	}
 	u32 texture_id;
 	video::ITexture *texture;
 	video::ITexture *normal_texture;
+	video::ITexture *flags_texture;
 };
 
 struct TileSpec
@@ -184,6 +194,7 @@ struct TileSpec
 		texture_id(0),
 		texture(NULL),
 		normal_texture(NULL),
+		flags_texture(NULL),
 		alpha(255),
 		material_type(TILE_MATERIAL_BASIC),
 		material_flags(
@@ -250,6 +261,7 @@ struct TileSpec
 	u32 texture_id;
 	video::ITexture *texture;
 	video::ITexture *normal_texture;
+	video::ITexture *flags_texture;
 	
 	// Vertex alpha (when MATERIAL_ALPHA_VERTEX is used)
 	u8 alpha;
@@ -264,5 +276,4 @@ struct TileSpec
 
 	u8 rotation;
 };
-
 #endif

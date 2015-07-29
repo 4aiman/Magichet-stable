@@ -28,7 +28,7 @@ tab_credits = {
                                 "box[-100,-10;200,12;#999999]" ..
 
                                 "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                                "label[2.5,9.75;Magichet 1.1]" ..
+                                "label[2.5,9.55;Magichet 1.2]" ..
                                 "image[0.25,8.7;2,2;"..core.formspec_escape(logofile).."]"..
                                 "textlist[0,2.0;15.8,6.25;list_credits;" ..
                                 "#FFFF00" .. fgettext("Core Developers") .."," ..
@@ -40,18 +40,18 @@ tab_credits = {
                                 "       ShadowNinja <shadowninja@minetest.net>,"..
                                 "       sfan5 <sfan5@live.de>,"..
                                 "       ...,"..
-                                ","..
+                                --","..
                                 "#FFFF00" .. fgettext("Active Contributors") .. "," ..
                                 "       sapier,"..
                                 "       Craig Robbins (Zeno) <craig.d.robbins@gmail.com>,"..
                                 "       kilbith,"..
                                 "       paramat,"..
                                 "       ...,"..
-                                ","..
+                                --","..
                                 "#FFFF00" .. fgettext("Magichet Developers") .. "," ..
                                 "       4aiman Konsorumaniakku <4aiman@inbox.ru>,"..
                                 "       ...,"..
-                                "," ..
+                                --"," ..
                                 "#FFFF00" .. fgettext("Previous Contributors") .. "," ..
                                 "       Vanessa Ezekowitz (VanessaE) <vanessaezekowitz@gmail.com>,"..
                                 "       Jurgen Doser (doserj) <jurgen.doser@gmail.com>,"..

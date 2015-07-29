@@ -28,7 +28,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "nodedef.h"
 #include "content_mapnode.h" // For content_mapnode_get_new_name
 #include "voxelalgorithms.h"
-#include "profiler.h"
 #include "settings.h" // For g_settings
 #include "emerge.h"
 #include "dungeongen.h"
@@ -108,6 +107,14 @@ MapgenV6::MapgenV6(int mapgenid, MapgenParams *params, EmergeManager *emerge)
 		c_mossycobble = c_cobble;
 	if (c_stair_cobble == CONTENT_IGNORE)
 		c_stair_cobble = c_cobble;
+	if (c_dirt_with_snow == CONTENT_IGNORE)
+		c_dirt_with_snow = c_dirt_with_grass;
+	if (c_snow == CONTENT_IGNORE)
+		c_snow = CONTENT_AIR;
+	if (c_snowblock == CONTENT_IGNORE)
+		c_snowblock = c_dirt_with_grass;
+	if (c_ice == CONTENT_IGNORE)
+		c_ice = c_water_source;
 }
 
 
@@ -1007,7 +1014,7 @@ void MapgenV6::growGrass() // Add surface nodes
 			} else if (bt == BT_TUNDRA) {
 				if (c == c_dirt) {
 					vm->m_data[i] = n_dirt_with_snow;
-				} else if (c == c_stone) {
+				} else if (c == c_stone && surface_y < node_max.Y) {
 					vm->m_area.add_y(em, i, 1);
 					vm->m_data[i] = n_snow;
 				}

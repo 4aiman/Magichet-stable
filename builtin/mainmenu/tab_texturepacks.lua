@@ -54,8 +54,8 @@ local function get_formspec(tabview, name, tabdata)
                        "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
                        "textlist[0,2.0;15.8,6.25;TPs;"
 
-        local current_texture_path = core.setting_get("texture_path")
-        local list = filter_texture_pack_list(core.get_dirlist(core.get_texturepath(), true))
+        local current_texture_path = core.setting_get("texture_path")        
+        local list = filter_texture_pack_list(core.get_dir_list(core.get_texturepath(), true))
         local index = tonumber(core.setting_get("mainmenu_last_selected_TP"))
 
         if index == nil then index = 1 end
@@ -67,7 +67,15 @@ local function get_formspec(tabview, name, tabdata)
                 return retval
         end
 
-        local infofile = current_texture_path ..DIR_DELIM.."info.txt"
+		local infofile = current_texture_path ..DIR_DELIM.."description.txt"
+		-- This adds backwards compatibility for old texture pack description files named
+		-- "info.txt", and should be removed once all such texture packs have been updated
+		if not file_exists(infofile) then
+			infofile = current_texture_path ..DIR_DELIM.."info.txt"
+			if file_exists(infofile) then
+				minetest.log("info.txt is depreciated. description.txt should be used instead.");
+			end
+		end
         local infotext = ""
         local f = io.open(infofile, "r")
         if f==nil then
@@ -99,7 +107,7 @@ local function main_button_handler(tabview, fields, name, tabdata)
                         local index = core.get_textlist_index("TPs")
                         core.setting_set("mainmenu_last_selected_TP",
                                 index)
-                        local list = filter_texture_pack_list(core.get_dirlist(core.get_texturepath(), true))
+                        local list = filter_texture_pack_list(core.get_dir_list(core.get_texturepath(), true))
                         local current_index = core.get_textlist_index("TPs")
                         if current_index ~= nil and #list >= current_index then
                                 local new_path = core.get_texturepath()..DIR_DELIM..list[current_index]

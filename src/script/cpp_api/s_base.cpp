@@ -119,14 +119,14 @@ ScriptApiBase::~ScriptApiBase()
 }
 
 bool ScriptApiBase::loadMod(const std::string &script_path,
-		const std::string &mod_name)
+		const std::string &mod_name, std::string *error)
 {
 	ModNameStorer mod_name_storer(getStack(), mod_name);
 
-	return loadScript(script_path);
+	return loadScript(script_path, error);
 }
 
-bool ScriptApiBase::loadScript(const std::string &script_path)
+bool ScriptApiBase::loadScript(const std::string &script_path, std::string *error)
 {
 	verbosestream << "Loading and running script from " << script_path << std::endl;
 
@@ -140,13 +140,14 @@ bool ScriptApiBase::loadScript(const std::string &script_path)
 	}
 	ok = ok && !lua_pcall(L, 0, 0, m_errorhandler);
 	if (!ok) {
-		errorstream << "========== ERROR FROM LUA ===========" << std::endl;
-		errorstream << "Failed to load and run script from " << std::endl;
-		errorstream << script_path << ":" << std::endl;
-		errorstream << std::endl;
-		errorstream << lua_tostring(L, -1) << std::endl;
-		errorstream << std::endl;
-		errorstream << "======= END OF ERROR FROM LUA ========" << std::endl;
+		std::string error_msg = lua_tostring(L, -1);
+		if (error)
+			*error = error_msg;
+		errorstream << "========== ERROR FROM LUA ===========" << std::endl
+			<< "Failed to load and run script from " << std::endl
+			<< script_path << ":" << std::endl << std::endl
+			<< error_msg << std::endl << std::endl
+			<< "======= END OF ERROR FROM LUA ========" << std::endl;
 		lua_pop(L, 1); // Pop error message from stack
 		return false;
 	}
@@ -156,8 +157,8 @@ bool ScriptApiBase::loadScript(const std::string &script_path)
 void ScriptApiBase::realityCheck()
 {
 	int top = lua_gettop(m_luastack);
-	if(top >= 30){
-		dstream<<"Stack is over 30:"<<std::endl;
+	if (top >= 30) {
+		dstream << "Stack is over 30:" << std::endl;
 		stackDump(dstream);
 		std::string traceback = script_get_backtrace(m_luastack);
 		throw LuaError("Stack is over 30 (reality check)\n" + traceback);
@@ -171,34 +172,29 @@ void ScriptApiBase::scriptError()
 
 void ScriptApiBase::stackDump(std::ostream &o)
 {
-	int i;
 	int top = lua_gettop(m_luastack);
-	for (i = 1; i <= top; i++) {  /* repeat for each level */
+	for (int i = 1; i <= top; i++) {  /* repeat for each level */
 		int t = lua_type(m_luastack, i);
 		switch (t) {
-
 			case LUA_TSTRING:  /* strings */
-				o<<"\""<<lua_tostring(m_luastack, i)<<"\"";
+				o << "\"" << lua_tostring(m_luastack, i) << "\"";
 				break;
-
 			case LUA_TBOOLEAN:  /* booleans */
-				o<<(lua_toboolean(m_luastack, i) ? "true" : "false");
+				o << (lua_toboolean(m_luastack, i) ? "true" : "false");
 				break;
-
 			case LUA_TNUMBER:  /* numbers */ {
 				char buf[10];
 				snprintf(buf, 10, "%g", lua_tonumber(m_luastack, i));
-				o<<buf;
-				break; }
-
-			default:  /* other values */
-				o<<lua_typename(m_luastack, t);
+				o << buf;
 				break;
-
+			}
+			default:  /* other values */
+				o << lua_typename(m_luastack, t);
+				break;
 		}
-		o<<" ";
+		o << " ";
 	}
-	o<<std::endl;
+	o << std::endl;
 }
 
 void ScriptApiBase::addObjectReference(ServerActiveObject *cobj)
@@ -250,7 +246,7 @@ void ScriptApiBase::removeObjectReference(ServerActiveObject *cobj)
 void ScriptApiBase::objectrefGetOrCreate(lua_State *L,
 		ServerActiveObject *cobj)
 {
-	if(cobj == NULL || cobj->getId() == 0){
+	if (cobj == NULL || cobj->getId() == 0) {
 		ObjectRef::create(L, cobj);
 	} else {
 		objectrefGet(L, cobj->getId());
@@ -268,4 +264,3 @@ void ScriptApiBase::objectrefGet(lua_State *L, u16 id)
 	lua_remove(L, -2); // object_refs
 	lua_remove(L, -2); // core
 }
-

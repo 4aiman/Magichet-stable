@@ -61,7 +61,7 @@ void TextDestGuiEngine::gotText(const StringMap &fields)
 /******************************************************************************/
 void TextDestGuiEngine::gotText(std::wstring text)
 {
-	m_engine->getScriptIface()->handleMainMenuEvent(wide_to_narrow(text));
+	m_engine->getScriptIface()->handleMainMenuEvent(wide_to_utf8(text));
 }
 
 /******************************************************************************/
@@ -172,7 +172,7 @@ GUIEngine::GUIEngine(	irr::IrrlichtDevice* dev,
 		m_sound_manager = &dummySoundManager;
 
 	//create topleft header
-	std::wstring t = narrow_to_wide(std::string(PROJECT_NAME_C " ") +
+	std::wstring t = utf8_to_wide(std::string(PROJECT_NAME_C " ") +
 			g_version_hash);
 
 	core::rect<s32> rect(0, 0, g_fontengine->getTextWidth(t), g_fontengine->getTextHeight());
@@ -208,10 +208,8 @@ GUIEngine::GUIEngine(	irr::IrrlichtDevice* dev,
 	m_script = new MainMenuScripting(this);
 
 	try {
-		if (m_data->errormessage != "") {
-			m_script->setMainMenuErrorMessage(m_data->errormessage);
-			m_data->errormessage = "";
-		}
+		m_script->setMainMenuData(&m_data->script_data);
+		m_data->script_data.errormessage = "";
 
 		if (!loadMainMenuScript()) {
 			errorstream << "No future without mainmenu" << std::endl;
@@ -219,10 +217,9 @@ GUIEngine::GUIEngine(	irr::IrrlichtDevice* dev,
 		}
 
 		run();
-	}
-	catch(LuaError &e) {
+	} catch (LuaError &e) {
 		errorstream << "MAINMENU ERROR: " << e.what() << std::endl;
-		m_data->errormessage = e.what();
+		m_data->script_data.errormessage = e.what();
 	}
 
 	m_menu->quitMenu();
@@ -572,12 +569,12 @@ bool GUIEngine::downloadFile(std::string url, std::string target)
 /******************************************************************************/
 void GUIEngine::setTopleftText(std::string append)
 {
-	std::wstring toset = narrow_to_wide(std::string(""));
+	std::wstring toset = utf8_to_wide(std::string(""));
 
 	if (append != "")
 	{
 		toset += L" / ";
-		toset += narrow_to_wide(append);
+		toset += utf8_to_wide(append);
 	}
 
 	m_irr_toplefttext->setText(toset.c_str());

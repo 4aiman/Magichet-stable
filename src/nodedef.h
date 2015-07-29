@@ -113,6 +113,8 @@ struct TileDef
 {
 	std::string name;
 	bool backface_culling; // Takes effect only in special cases
+	bool tileable_horizontal;
+	bool tileable_vertical;
 	struct{
 		enum TileAnimationType type;
 		int aspect_w; // width for aspect ratio
@@ -124,6 +126,8 @@ struct TileDef
 	{
 		name = "";
 		backface_culling = true;
+		tileable_horizontal = true;
+		tileable_vertical = true;
 		animation.type = TAT_NONE;
 		animation.aspect_w = 1;
 		animation.aspect_h = 1;
@@ -194,6 +198,7 @@ struct ContentFeatures
 	std::string mesh;
 #ifndef SERVER
 	scene::IMesh *mesh_ptr[24];
+	video::SColor minimap_color;
 #endif
 	float visual_scale; // Misc. scale parameter
 	TileDef tiledef[6];
@@ -202,6 +207,7 @@ struct ContentFeatures
 
 	// Post effect color, drawn when the camera is inside the node.
 	video::SColor post_effect_color;
+
 	// Type of MapNode::param1
 	ContentParamType param_type;
 	// Type of MapNode::param2

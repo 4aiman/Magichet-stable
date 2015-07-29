@@ -16,6 +16,19 @@
 --51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --------------------------------------------------------------------------------
+
+local leaves_style_labels = {
+	fgettext("Opaque Leaves"),
+	fgettext("Simple Leaves"),
+	fgettext("Fancy Leaves")
+}
+
+local leaves_style = {
+	{leaves_style_labels[1]..","..leaves_style_labels[2]..","..leaves_style_labels[3]},
+	{"opaque", "simple", "fancy"},
+}
+
+
 local dd_filter_labels = {
         fgettext("No Filter"),
         fgettext("Bilinear Filter"),
@@ -38,6 +51,29 @@ local mipmap = {
         {"", "mip_map", "anisotropic_filter"},
 }
 
+local function getLeavesStyleSettingIndex()
+	local style = core.setting_get("leaves_style")
+	if (style == leaves_style[2][3]) then
+		return 3
+	elseif (style == leaves_style[2][2]) then
+		return 2
+	end
+	return 1
+end
+
+local dd_antialiasing_labels = {
+	fgettext("None"),
+	fgettext("2x"),
+	fgettext("4x"),
+	fgettext("8x"),
+}
+
+local antialiasing = {
+	{dd_antialiasing_labels[1]..","..dd_antialiasing_labels[2]..","..
+		dd_antialiasing_labels[3]..","..dd_antialiasing_labels[4]},
+	{"0", "2", "4", "8"}
+}
+
 local function getFilterSettingIndex()
         if (core.setting_get(filters[2][3]) == "true") then
                 return 3
@@ -58,6 +94,7 @@ local function getMipmapSettingIndex()
         return 1
 end
 
+
 local function video_driver_fname_to_name(selected_driver)
         local video_drivers = core.get_video_drivers()
 
@@ -69,6 +106,27 @@ local function video_driver_fname_to_name(selected_driver)
 
         return ""
 end
+
+
+local function getAntialiasingSettingIndex()
+	local antialiasing_setting = core.setting_get("fsaa")
+	for i = 1, #(antialiasing[2]) do
+		if antialiasing_setting == antialiasing[2][i] then
+			return i
+		end
+	end
+	return 1
+end
+
+local function antialiasing_fname_to_name(fname)
+	for i = 1, #(dd_antialiasing_labels) do
+		if fname == dd_antialiasing_labels[i] then
+			return antialiasing[2][i]
+		end
+	end
+	return 0
+end
+
 local function dlg_confirm_reset_formspec(data)
         local retval =
                 "size[8,3]" ..
@@ -223,7 +281,8 @@ local function formspec(tabview, name, tabdata)
                 "box[9.75,2.5;5.25,4;#999999]"..
                 "checkbox[10,2.5;cb_shaders;".. fgettext("Shaders") .. ";"
                 .. dump(core.setting_getbool("enable_shaders")) .. "]"..
-                "image_button[0,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_change_keys;".. fgettext("Change keys") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"--..
+                "image_button[0,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_change_keys;".. fgettext("Change keys") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"--..
 --                "image_button[3.75,5;3.88,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
         else
                 tab_string = tab_string ..
@@ -292,7 +351,7 @@ end
 
 --------------------------------------------------------------------------------
 local function handle_settings_buttons(this, fields, tabname, tabdata)
-        if fields["cb_fancy_trees"] then
+       if fields["cb_fancy_trees"] then
                 core.setting_set("new_style_leaves", fields["cb_fancy_trees"])
                 return true
         end

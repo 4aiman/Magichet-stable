@@ -32,6 +32,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
+// Checks whether a byte is an inner byte for an utf-8 multibyte sequence
+#define IS_UTF8_MULTB_INNER(x) (((unsigned char)x >= 0x80) && ((unsigned char)x < 0xc0))
+
 typedef std::map<std::string, std::string> StringMap;
 
 struct FlagDesc {
@@ -39,10 +42,20 @@ struct FlagDesc {
 	u32 flag;
 };
 
+// try not to convert between wide/utf8 encodings; this can result in data loss
+// try to only convert between them when you need to input/output stuff via Irrlicht
+std::wstring utf8_to_wide(const std::string &input);
+std::string wide_to_utf8(const std::wstring &input);
+
+wchar_t *utf8_to_wide_c(const char *str);
+
+// NEVER use those two functions unless you have a VERY GOOD reason to
+// they just convert between wide and multibyte encoding
+// multibyte encoding depends on current locale, this is no good, especially on Windows
+
 // You must free the returned string!
 // The returned string is allocated using new
 wchar_t *narrow_to_wide_c(const char *str);
-
 std::wstring narrow_to_wide(const std::string &mbs);
 std::string wide_to_narrow(const std::wstring &wcs);
 
@@ -403,7 +416,10 @@ inline bool string_allowed_blacklist(const std::string &str,
  *	every \p row_len characters whether it breaks a word or not.  It is
  *	intended to be used for, for example, showing paths in the GUI.
  *
- * @param from The string to be wrapped into rows.
+ * @note This function doesn't wrap inside utf-8 multibyte sequences and also
+ * 	counts multibyte sequences correcly as single characters.
+ *
+ * @param from The (utf-8) string to be wrapped into rows.
  * @param row_len The row length (in characters).
  * @return A new string with the wrapping applied.
  */
@@ -412,9 +428,14 @@ inline std::string wrap_rows(const std::string &from,
 {
 	std::string to;
 
+	size_t character_idx = 0;
 	for (size_t i = 0; i < from.size(); i++) {
-		if (i != 0 && i % row_len == 0)
-			to += '\n';
+		if (!IS_UTF8_MULTB_INNER(from[i])) {
+			// Wrap string after last inner byte of char
+			if (character_idx > 0 && character_idx % row_len == 0)
+				to += '\n';
+			character_idx++;
+		}
 		to += from[i];
 	}
 

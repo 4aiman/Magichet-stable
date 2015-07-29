@@ -44,6 +44,7 @@ Player::Player(IGameDef *gamedef, const char *name):
 	hp(PLAYER_MAX_HP),
 	hurt_tilt_timer(0),
 	hurt_tilt_strength(0),
+	protocol_version(0),
 	peer_id(PEER_ID_INEXISTENT),
 	keyPressed(0),
 // protected
@@ -71,6 +72,7 @@ Player::Player(IGameDef *gamedef, const char *name):
 		//"image[1,0.6;1,2;player.png]"
 		"list[current_player;main;0,3.5;8,4;]"
 		"list[current_player;craft;3,0;3,3;]"
+		"listring[]"
 		"list[current_player;craftpreview;7,1;1,1;]";
 
 	// Initialize movement settings at default values, so movement can work if the server fails to send them
@@ -118,31 +120,12 @@ void Player::accelerateHorizontal(v3f target_speed, f32 max_increase)
 	f32 dl = d_wanted.getLength();
 	if(dl > max_increase)
 		dl = max_increase;
-	
+
 	v3f d = d_wanted.normalize() * dl;
 
 	m_speed.X += d.X;
 	m_speed.Z += d.Z;
 
-#if 0 // old code
-	if(m_speed.X < target_speed.X - max_increase)
-		m_speed.X += max_increase;
-	else if(m_speed.X > target_speed.X + max_increase)
-		m_speed.X -= max_increase;
-	else if(m_speed.X < target_speed.X)
-		m_speed.X = target_speed.X;
-	else if(m_speed.X > target_speed.X)
-		m_speed.X = target_speed.X;
-
-	if(m_speed.Z < target_speed.Z - max_increase)
-		m_speed.Z += max_increase;
-	else if(m_speed.Z > target_speed.Z + max_increase)
-		m_speed.Z -= max_increase;
-	else if(m_speed.Z < target_speed.Z)
-		m_speed.Z = target_speed.Z;
-	else if(m_speed.Z > target_speed.Z)
-		m_speed.Z = target_speed.Z;
-#endif
 }
 
 // Vertical acceleration (Y), X and Z directions are ignored
@@ -159,16 +142,6 @@ void Player::accelerateVertical(v3f target_speed, f32 max_increase)
 
 	m_speed.Y += d_wanted;
 
-#if 0 // old code
-	if(m_speed.Y < target_speed.Y - max_increase)
-		m_speed.Y += max_increase;
-	else if(m_speed.Y > target_speed.Y + max_increase)
-		m_speed.Y -= max_increase;
-	else if(m_speed.Y < target_speed.Y)
-		m_speed.Y = target_speed.Y;
-	else if(m_speed.Y > target_speed.Y)
-		m_speed.Y = target_speed.Y;
-#endif
 }
 
 v3s16 Player::getLightPosition() const

@@ -30,7 +30,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // request_shutdown()
 int ModApiServer::l_request_shutdown(lua_State *L)
 {
-	getServer(L)->requestShutdown();
+	const char *msg = lua_tolstring(L, 1, NULL);
+	bool reconnect = lua_toboolean(L, 2);
+	getServer(L)->requestShutdown(msg ? msg : "", reconnect);
 	return 0;
 }
 
@@ -307,7 +309,7 @@ int ModApiServer::l_kick_player(lua_State *L)
 		lua_pushboolean(L, false); // No such player
 		return 1;
 	}
-	getServer(L)->DenyAccess_Legacy(player->peer_id, narrow_to_wide(message));
+	getServer(L)->DenyAccess_Legacy(player->peer_id, utf8_to_wide(message));
 	lua_pushboolean(L, true);
 	return 1;
 }

@@ -34,6 +34,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "porting.h"
 #include "mapblock_mesh.h"
 #include "mapblock.h"
+#include "minimap.h"
 #include "settings.h"
 #include "profiler.h"
 #include "gettext.h"
@@ -138,7 +139,7 @@ void MeshUpdateQueue::addBlock(v3s16 p, MeshMakeData *data, bool ack_block_to_se
 
 // Returned pointer must be deleted
 // Returns NULL if queue is empty
-QueuedMeshUpdate * MeshUpdateQueue::pop()
+QueuedMeshUpdate *MeshUpdateQueue::pop()
 {
 	JMutexAutoLock lock(m_mutex);
 
@@ -161,35 +162,21 @@ QueuedMeshUpdate * MeshUpdateQueue::pop()
 	MeshUpdateThread
 */
 
-void * MeshUpdateThread::Thread()
+void MeshUpdateThread::enqueueUpdate(v3s16 p, MeshMakeData *data,
+		bool ack_block_to_server, bool urgent)
 {
-	ThreadStarted();
+	m_queue_in.addBlock(p, data, ack_block_to_server, urgent);
+	deferUpdate();
+}
 
-	log_register_thread("MeshUpdateThread");
-
-	DSTACK(__FUNCTION_NAME);
-
-	BEGIN_DEBUG_EXCEPTION_HANDLER
-
-	porting::setThreadName("MeshUpdateThread");
-
-	while(!StopRequested())
-	{
-		QueuedMeshUpdate *q = m_queue_in.pop();
-		if(q == NULL)
-		{
-			sleep_ms(3);
-			continue;
-		}
+void MeshUpdateThread::doUpdate()
+{
+	QueuedMeshUpdate *q;
+	while ((q = m_queue_in.pop())) {
 
 		ScopeProfiler sp(g_profiler, "Client: Mesh making");
 
 		MapBlockMesh *mesh_new = new MapBlockMesh(q->data, m_camera_offset);
-		if(mesh_new->getMesh()->getMeshBufferCount() == 0)
-		{
-			delete mesh_new;
-			mesh_new = NULL;
-		}
 
 		MeshUpdateResult r;
 		r.p = q->p;
@@ -200,10 +187,6 @@ void * MeshUpdateThread::Thread()
 
 		delete q;
 	}
-
-	END_DEBUG_EXCEPTION_HANDLER(errorstream)
-
-	return NULL;
 }
 
 /*
@@ -234,7 +217,7 @@ Client::Client(
 	m_nodedef(nodedef),
 	m_sound(sound),
 	m_event(event),
-	m_mesh_update_thread(this),
+	m_mesh_update_thread(),
 	m_env(
 		new ClientMap(this, this, control,
 			device->getSceneManager()->getRootSceneNode(),
@@ -246,6 +229,7 @@ Client::Client(
 	m_con(PROTOCOL_ID, 512, CONNECTION_TIMEOUT, ipv6, this),
 	m_device(device),
 	m_server_ser_ver(SER_FMT_VER_INVALID),
+	m_proto_ver(0),
 	m_playeritem(0),
 	m_inventory_updated(false),
 	m_inventory_from_server(NULL),
@@ -260,6 +244,7 @@ Client::Client(
 	m_chosen_auth_mech(AUTH_MECHANISM_NONE),
 	m_auth_data(NULL),
 	m_access_denied(false),
+	m_access_denied_reconnect(false),
 	m_itemdef_received(false),
 	m_nodedef_received(false),
 	m_media_downloader(new ClientMediaDownloader()),
@@ -274,6 +259,7 @@ Client::Client(
 	// Add local player
 	m_env.addPlayer(new LocalPlayer(this, playername));
 
+	m_mapper = new Mapper(device, this);
 	m_cache_save_interval = g_settings->getU16("server_map_save_interval");
 
 	m_cache_smooth_lighting = g_settings->getBool("smooth_lighting");
@@ -537,27 +523,42 @@ void Client::step(float dtime)
 	*/
 	{
 		int num_processed_meshes = 0;
-		while(!m_mesh_update_thread.m_queue_out.empty())
+		while (!m_mesh_update_thread.m_queue_out.empty())
 		{
 			num_processed_meshes++;
+
+			MinimapMapblock *minimap_mapblock = NULL;
+			bool do_mapper_update = true;
+
 			MeshUpdateResult r = m_mesh_update_thread.m_queue_out.pop_frontNoEx();
 			MapBlock *block = m_env.getMap().getBlockNoCreateNoEx(r.p);
-			if(block) {
+			if (block) {
 				// Delete the old mesh
-				if(block->mesh != NULL)
-				{
-					// TODO: Remove hardware buffers of meshbuffers of block->mesh
+				if (block->mesh != NULL) {
 					delete block->mesh;
 					block->mesh = NULL;
 				}
 
-				// Replace with the new mesh
-				block->mesh = r.mesh;
+				if (r.mesh) {
+					minimap_mapblock = r.mesh->moveMinimapMapblock();
+					if (minimap_mapblock == NULL)
+						do_mapper_update = false;
+				}
+
+				if (r.mesh && r.mesh->getMesh()->getMeshBufferCount() == 0) {
+					delete r.mesh;
+				} else {
+					// Replace with the new mesh
+					block->mesh = r.mesh;
+				}
 			} else {
 				delete r.mesh;
 			}
 
-			if(r.ack_block_to_server) {
+			if (do_mapper_update)
+				m_mapper->addBlock(r.p, minimap_mapblock);
+
+			if (r.ack_block_to_server) {
 				/*
 					Acknowledge block
 					[0] u8 count
@@ -567,7 +568,7 @@ void Client::step(float dtime)
 			}
 		}
 
-		if(num_processed_meshes > 0)
+		if (num_processed_meshes > 0)
 			g_profiler->graphAdd("num_processed_meshes", num_processed_meshes);
 	}
 
@@ -742,14 +743,19 @@ bool Client::loadMedia(const std::string &data, const std::string &filename)
 // Virtual methods from con::PeerHandler
 void Client::peerAdded(con::Peer *peer)
 {
-	infostream<<"Client::peerAdded(): peer->id="
-			<<peer->id<<std::endl;
+	infostream << "Client::peerAdded(): peer->id="
+			<< peer->id << std::endl;
 }
 void Client::deletingPeer(con::Peer *peer, bool timeout)
 {
-	infostream<<"Client::deletingPeer(): "
+	infostream << "Client::deletingPeer(): "
 			"Server Peer is getting deleted "
-			<<"(timeout="<<timeout<<")"<<std::endl;
+			<< "(timeout=" << timeout << ")" << std::endl;
+
+	if (timeout) {
+		m_access_denied = true;
+		m_access_denied_reason = gettext("Connection timed out.");
+	}
 }
 
 /*
@@ -880,6 +886,7 @@ void Client::ProcessData(NetworkPacket *pkt)
 	if (command >= TOCLIENT_NUM_MSG_TYPES) {
 		infostream << "Client: Ignoring unknown command "
 			<< command << std::endl;
+		return;
 	}
 
 	/*
@@ -966,6 +973,7 @@ void Client::deleteAuthData()
 		case AUTH_MECHANISM_NONE:
 			break;
 	}
+	m_chosen_auth_mech = AUTH_MECHANISM_NONE;
 }
 
 
@@ -1052,7 +1060,6 @@ void Client::startAuth(AuthMechanism chosen_auth_mechanism)
 
 			NetworkPacket resp_pkt(TOSERVER_SRP_BYTES_A, 0);
 			resp_pkt << std::string(bytes_A, len_A) << based_on;
-			free(bytes_A);
 			Send(&resp_pkt);
 			break;
 		}
@@ -1592,7 +1599,7 @@ void Client::addUpdateMeshTask(v3s16 p, bool ack_to_server, bool urgent)
 	}
 
 	// Add task to queue
-	m_mesh_update_thread.m_queue_in.addBlock(p, data, ack_to_server, urgent);
+	m_mesh_update_thread.enqueueUpdate(p, data, ack_to_server, urgent);
 }
 
 void Client::addUpdateMeshTaskWithEdge(v3s16 blockpos, bool ack_to_server, bool urgent)

@@ -277,20 +277,24 @@ TileDef read_tiledef(lua_State *L, int index)
 		getstringfield(L, index, "name", tiledef.name);
 		getstringfield(L, index, "image", tiledef.name); // MaterialSpec compat.
 		tiledef.backface_culling = getboolfield_default(
-					L, index, "backface_culling", true);
+			L, index, "backface_culling", true);
+		tiledef.tileable_horizontal = getboolfield_default(
+			L, index, "tileable_horizontal", true);
+		tiledef.tileable_vertical = getboolfield_default(
+			L, index, "tileable_vertical", true);
 		// animation = {}
 		lua_getfield(L, index, "animation");
 		if(lua_istable(L, -1)){
 			// {type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}
 			tiledef.animation.type = (TileAnimationType)
-					getenumfield(L, -1, "type", es_TileAnimationType,
-					TAT_NONE);
+				getenumfield(L, -1, "type", es_TileAnimationType,
+				TAT_NONE);
 			tiledef.animation.aspect_w =
-					getintfield_default(L, -1, "aspect_w", 16);
+				getintfield_default(L, -1, "aspect_w", 16);
 			tiledef.animation.aspect_h =
-					getintfield_default(L, -1, "aspect_h", 16);
+				getintfield_default(L, -1, "aspect_h", 16);
 			tiledef.animation.length =
-					getfloatfield_default(L, -1, "length", 1.0);
+				getfloatfield_default(L, -1, "length", 1.0);
 		}
 		lua_pop(L, 1);
 	}
@@ -985,11 +989,11 @@ void read_groups(lua_State *L, int index,
 }
 
 /******************************************************************************/
-void push_groups(lua_State *L, std::map<std::string, int> groups)
+void push_groups(lua_State *L, const std::map<std::string, int> &groups)
 {
 	lua_newtable(L);
-	for (std::map<std::string, int>::iterator it = groups.begin();
-			it != groups.end(); ++it) {
+	std::map<std::string, int>::const_iterator it;
+	for (it = groups.begin(); it != groups.end(); ++it) {
 		lua_pushnumber(L, it->second);
 		lua_setfield(L, -2, it->first.c_str());
 	}
@@ -998,12 +1002,10 @@ void push_groups(lua_State *L, std::map<std::string, int> groups)
 /******************************************************************************/
 void push_items(lua_State *L, const std::vector<ItemStack> &items)
 {
-	// Create and fill table
 	lua_createtable(L, items.size(), 0);
-	std::vector<ItemStack>::const_iterator iter = items.begin();
-	for (u32 i = 0; iter != items.end(); iter++) {
-		LuaItemStack::create(L, *iter);
-		lua_rawseti(L, -2, ++i);
+	for (u32 i = 0; i != items.size(); i++) {
+		LuaItemStack::create(L, items[i]);
+		lua_rawseti(L, -2, i + 1);
 	}
 }
 

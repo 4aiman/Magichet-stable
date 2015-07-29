@@ -26,6 +26,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <map>
 
 class IGameDef;
+class IShaderSource;
 
 /*
 	Mesh making stuff
@@ -33,6 +34,7 @@ class IGameDef;
 
 
 class MapBlock;
+struct MinimapMapblock;
 
 struct MeshMakeData
 {
@@ -102,9 +104,16 @@ public:
 	// Returns true if anything has been changed.
 	bool animate(bool faraway, float time, int crack, u32 daynight_ratio);
 
-	scene::SMesh* getMesh()
+	scene::SMesh *getMesh()
 	{
 		return m_mesh;
+	}
+
+	MinimapMapblock *moveMinimapMapblock()
+	{
+		MinimapMapblock *p = m_minimap_mapblock;
+		m_minimap_mapblock = NULL;
+		return p;
 	}
 
 	bool isAnimationForced() const
@@ -122,7 +131,10 @@ public:
 
 private:
 	scene::SMesh *m_mesh;
+	MinimapMapblock *m_minimap_mapblock;
 	IGameDef *m_gamedef;
+	ITextureSource *m_tsrc;
+	IShaderSource *m_shdrsrc;
 
 	bool m_enable_shaders;
 	bool m_enable_highlighting;
@@ -165,13 +177,12 @@ struct PreMeshBuffer
 {
 	TileSpec tile;
 	std::vector<u16> indices;
-	std::vector<video::S3DVertex> vertices;
+	std::vector<video::S3DVertexTangents> vertices;
 };
 
 struct MeshCollector
 {
 	std::vector<PreMeshBuffer> prebuffers;
-
 	void append(const TileSpec &material,
 			const video::S3DVertex *vertices, u32 numVertices,
 			const u16 *indices, u32 numIndices);

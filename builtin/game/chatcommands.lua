@@ -190,7 +190,7 @@ core.register_chatcommand("revoke", {
 		local revoke_privs = core.string_to_privs(revoke_priv_str)
 		local privs = core.get_player_privs(revoke_name)
 		for priv, _ in pairs(revoke_privs) do
-			if priv ~= "interact" and priv ~= "shout" and priv ~= "interact_extra" and
+			if priv ~= "interact" and priv ~= "shout" and
 					not core.check_player_privs(name, {privs=true}) then
 				return false, "Your privileges are insufficient."
 			end
@@ -515,22 +515,29 @@ core.register_chatcommand("giveme", {
 })
 
 core.register_chatcommand("spawnentity", {
-	params = "<EntityName>",
-	description = "Spawn entity at your position",
+	params = "<EntityName> [<X>,<Y>,<Z>]",
+	description = "Spawn entity at given (or your) position",
 	privs = {give=true, interact=true},
 	func = function(name, param)
-		local entityname = string.match(param, "(.+)$")
+		local entityname, p = string.match(param, "^([^ ]+) *(.*)$")
 		if not entityname then
 			return false, "EntityName required"
 		end
-		core.log("action", ("/spawnentity invoked, entityname=%q")
-				:format(entityname))
+		core.log("action", ("%s invokes /spawnentity, entityname=%q")
+				:format(name, entityname))
 		local player = core.get_player_by_name(name)
 		if player == nil then
 			core.log("error", "Unable to spawn entity, player is nil")
 			return false, "Unable to spawn entity, player is nil"
 		end
-		local p = player:getpos()
+		if p == "" then
+			p = player:getpos()
+		else
+			p = core.string_to_pos(p)
+			if p == nil then
+				return false, "Invalid parameters ('" .. param .. "')"
+			end
+		end
 		p.y = p.y + 1
 		core.add_entity(p, entityname)
 		return true, ("%q spawned."):format(entityname)

@@ -175,25 +175,30 @@ end
 
 --------------------------------------------------------------------------------
 function asyncOnlineFavourites()
-
-        menudata.favorites = {}
-        core.handle_async(
-                function(param)
-                      local ret = core.get_favorites("online")
-                      local num = core.get_favorites("local")
-                      local cou = 0
-                      for k,v in ipairs(core.get_favorites("local")) do
-                          cou = cou+1
-                          table.insert(ret,cou,v)
-                      end
-                      return ret
-                end,
-                nil,
-                function(result)
-                   menudata.favorites = result
-                   core.event_handler("Refresh")
-                end
-                )
+	if not menudata.public_known then
+		menudata.public_known = {{
+			name = fgettext("Loading..."),
+			description = fgettext("Try reenabling public serverlist and check your internet connection.")
+		}}
+	end
+	menudata.favorites = menudata.public_known or {}
+	core.handle_async(
+		function(param)
+            local ret = core.get_favorites("online")
+            local num = core.get_favorites("local")
+            local cou = 0
+            for k,v in ipairs(core.get_favorites("local")) do
+                cou = cou+1
+                table.insert(ret,cou,v)
+            end
+            return ret
+		end,
+		nil,
+        function(result)
+           menudata.favorites = result
+           core.event_handler("Refresh")
+        end
+	)
 end
 
 --------------------------------------------------------------------------------
@@ -218,4 +223,36 @@ function text2textlist(xpos,ypos,width,height,tl_name,textlen,text,transparency)
         retval = retval .. "]"
 
         return retval
+end
+--------------------------------------------------------------------------------
+function menu_worldmt(selected, setting, value)
+	local world = menudata.worldlist:get_list()[selected]
+	if world then
+		local filename = world.path .. DIR_DELIM .. "world.mt"
+		local world_conf = Settings(filename)
+
+		if value ~= nil then
+			if not world_conf:write() then
+				core.log("error", "Failed to write world config file")
+			end
+			world_conf:set(setting, value)
+			world_conf:write()
+		else
+			return world_conf:get(setting)
+		end
+	else
+		return nil
+	end
+end
+
+function menu_worldmt_legacy(selected)
+	local modes_names = {"creative_mode", "enable_damage", "server_announce"}
+	for _, mode_name in pairs(modes_names) do
+		local mode_val = menu_worldmt(selected, mode_name)
+		if mode_val ~= nil then
+			core.setting_set(mode_name, mode_val)
+		else
+			menu_worldmt(selected, mode_name, core.setting_get(mode_name))
+		end
+	end
 end

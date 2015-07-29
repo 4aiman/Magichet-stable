@@ -35,8 +35,8 @@ local function get_formspec(tabview, name, tabdata)
         retval = retval ..
 --              "label[0.8,4.2;" .. fgettext("Add mod:") .. "]" ..
 --              TODO Disabled due to upcoming release 0.4.8 and irrlicht messing up localization
---              "button[0.75,4.85;1.8,0.5;btn_mod_mgr_install_local;".. fgettext("Local install") .. "]" ..
-                "image_button[0,4.85;5.25,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore;".. fgettext("Online mod repository") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+              "button[0.75,4.85;1.8,0.5;btn_mod_mgr_install_local;".. fgettext("Local install") .. "]" ..
+              "image_button[0,4.85;5.25,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore;".. fgettext("Online mod repository") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
 
         local selected_mod = nil
 

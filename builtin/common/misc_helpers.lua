@@ -155,9 +155,11 @@ function dump(o, indent, nested, level)
 end
 
 --------------------------------------------------------------------------------
+
 -- Localize functions to avoid table lookups (better performance).
 local table_insert = table.insert
 local str_sub, str_find = string.sub, string.find
+
 function string.split(str, delim, include_empty, max_splits, sep_is_pattern)
 	delim = delim or ","
 	max_splits = max_splits or -1
@@ -183,9 +185,22 @@ function string.split(str, delim, include_empty, max_splits, sep_is_pattern)
 end
 
 --------------------------------------------------------------------------------
+function table.indexof(list, val)
+	for i = 1, #list do
+		if list[i] == val then
+			return i
+		end
+	end
+	return -1
+end
+
+assert(table.indexof({"foo", "bar"}, "foo") == 1)
+assert(table.indexof({"foo", "bar"}, "baz") == -1)
+
+--------------------------------------------------------------------------------
 function file_exists(filename)
 	local f = io.open(filename, "r")
-	if f==nil then
+	if f == nil then
 		return false
 	else
 		f:close()

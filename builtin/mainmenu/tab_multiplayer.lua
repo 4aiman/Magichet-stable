@@ -95,9 +95,9 @@ local function get_formspec(tabview, name, tabdata)
                  "tableoptions[background=#00000000;border=false]"..
                  "table[0,2.2;16,6.25;favourites;"
 
-        if #menudata.favorites == 0 then
-           asyncOnlineFavourites()
-        end
+        --if #menudata.favorites == 0 then
+        --   asyncOnlineFavourites()
+        --end
 
         if #menudata.favorites > 0 then
                 retval = retval .. render_favorite(menudata.favorites[1])
