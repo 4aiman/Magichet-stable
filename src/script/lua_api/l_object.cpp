@@ -405,7 +405,8 @@ int ObjectRef::l_get_armor_groups(lua_State *L)
 }
 
 // set_physics_override(self, physics_override_speed, physics_override_jump,
-//                      physics_override_gravity, sneak, sneak_glitch)
+//                      physics_override_gravity, sneak, sneak_glitch,
+//                      physics_override_fall_tolerance, physics_override_attack_power, physics_override_efficiency)
 int ObjectRef::l_set_physics_override(lua_State *L)
 {
 	ObjectRef *ref = checkobject(L, 1);
@@ -413,14 +414,17 @@ int ObjectRef::l_set_physics_override(lua_State *L)
 	if (co == NULL) return 0;
 	// Do it
 	if (lua_istable(L, 2)) {
-		co->m_physics_override_speed = getfloatfield_default(L, 2, "speed", co->m_physics_override_speed);
-		co->m_physics_override_jump = getfloatfield_default(L, 2, "jump", co->m_physics_override_jump);
-		co->m_physics_override_gravity = getfloatfield_default(L, 2, "gravity", co->m_physics_override_gravity);
-		co->m_physics_override_sneak = getboolfield_default(L, 2, "sneak", co->m_physics_override_sneak);
-		co->m_physics_override_sneak_glitch = getboolfield_default(L, 2, "sneak_glitch", co->m_physics_override_sneak_glitch);
+		co->m_physics_override_speed          = getfloatfield_default(L, 2, "speed",          co->m_physics_override_speed);
+		co->m_physics_override_jump           = getfloatfield_default(L, 2, "jump",           co->m_physics_override_jump);
+		co->m_physics_override_gravity        = getfloatfield_default(L, 2, "gravity",        co->m_physics_override_gravity);
+		co->m_physics_override_sneak          = getboolfield_default (L, 2, "sneak",          co->m_physics_override_sneak);
+		co->m_physics_override_sneak_glitch   = getboolfield_default (L, 2, "sneak_glitch",   co->m_physics_override_sneak_glitch);
+		co->m_physics_override_fall_tolerance = getfloatfield_default(L, 2, "fall_tolerance", co->m_physics_override_fall_tolerance);
+		co->m_physics_override_attack_power   = getfloatfield_default(L, 2, "attack_power",   co->m_physics_override_attack_power);
+		co->m_physics_override_efficiency     = getfloatfield_default(L, 2, "efficiency",     co->m_physics_override_efficiency);
 		co->m_physics_override_sent = false;
 	} else {
-		// old, non-table format
+		// old, non-table format. Since it IS old, I don't need to duplicate NEW fields here.
 		if (!lua_isnil(L, 2)) {
 			co->m_physics_override_speed = lua_tonumber(L, 2);
 			co->m_physics_override_sent = false;
@@ -456,6 +460,12 @@ int ObjectRef::l_get_physics_override(lua_State *L)
 	lua_setfield(L, -2, "sneak");
 	lua_pushboolean(L, co->m_physics_override_sneak_glitch);
 	lua_setfield(L, -2, "sneak_glitch");
+	lua_pushnumber(L, co->m_physics_override_fall_tolerance);
+	lua_setfield(L, -2, "fall_tolerance");
+	lua_pushnumber(L, co->m_physics_override_attack_power);
+	lua_setfield(L, -2, "attack_power");
+	lua_pushnumber(L, co->m_physics_override_efficiency);
+	lua_setfield(L, -2, "efficiency");
 	return 1;
 }
 

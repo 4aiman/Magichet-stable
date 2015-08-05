@@ -444,18 +444,22 @@ int LuaEntitySAO::punch(v3f dir,
 			punchitem,
 			time_from_last_punch);
 
+    int damage = result.damage;
+    
 	if (result.did_punch) {
-		setHP(getHP() - result.damage);
-
-		if (result.damage > 0) {
+		if (damage > 0) {
+			if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {			
+ 				   PlayerSAO *ppp = (PlayerSAO *)puncher; 
+				   damage *= ppp->m_physics_override_attack_power;
+				}   
+			setHP(getHP() - damage);
 			std::string punchername = puncher ? puncher->getDescription() : "nil";
-
 			actionstream << getDescription() << " punched by "
-					<< punchername << ", damage " << result.damage
+					<< punchername << ", damage " << damage
 					<< " hp, health now " << getHP() << " hp" << std::endl;
 		}
 
-		std::string str = gob_cmd_punched(result.damage, getHP());
+		std::string str = gob_cmd_punched(damage, getHP());
 		// create message and add to list
 		ActiveObjectMessage aom(getId(), true, str);
 		m_messages_out.push(aom);
@@ -765,7 +769,10 @@ PlayerSAO::PlayerSAO(ServerEnvironment *env_, Player *player_, u16 peer_id_,
 	m_physics_override_gravity(1),
 	m_physics_override_sneak(true),
 	m_physics_override_sneak_glitch(true),
-	m_physics_override_sent(false)
+	m_physics_override_sent(false),
+	m_physics_override_fall_tolerance(1),
+	m_physics_override_attack_power(1),
+	m_physics_override_efficiency(1)
 {
 	assert(m_player);	// pre-condition
 	assert(m_peer_id != 0);	// pre-condition
@@ -856,7 +863,7 @@ std::string PlayerSAO::getClientInitializationData(u16 protocol_version)
 		os<<serializeLongString(gob_cmd_update_attachment(m_attachment_parent_id, m_attachment_bone, m_attachment_position, m_attachment_rotation)); // 4
 		os<<serializeLongString(gob_cmd_update_physics_override(m_physics_override_speed,
 				m_physics_override_jump, m_physics_override_gravity, m_physics_override_sneak,
-				m_physics_override_sneak_glitch)); // 5
+				m_physics_override_sneak_glitch,m_physics_override_fall_tolerance, m_physics_override_attack_power, m_physics_override_efficiency)); // 5
 		os << serializeLongString(gob_cmd_update_nametag_attributes(m_nametag_color)); // 6
 	}
 	else
@@ -980,7 +987,8 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		m_physics_override_sent = true;
 		std::string str = gob_cmd_update_physics_override(m_physics_override_speed,
 				m_physics_override_jump, m_physics_override_gravity,
-				m_physics_override_sneak, m_physics_override_sneak_glitch);
+				m_physics_override_sneak, m_physics_override_sneak_glitch, 
+				m_physics_override_fall_tolerance, m_physics_override_attack_power, m_physics_override_efficiency);
 		// create message and add to list
 		ActiveObjectMessage aom(getId(), true, str);
 		m_messages_out.push(aom);
@@ -1086,6 +1094,8 @@ int PlayerSAO::punch(v3f dir,
 
 	HitParams hitparams = getHitParams(m_armor_groups, toolcap,
 			time_from_last_punch);
+			
+	int damage = hitparams.hp;
 
 	std::string punchername = "nil";
 
@@ -1099,7 +1109,11 @@ int PlayerSAO::punch(v3f dir,
 				hitparams.hp);
 
 	if (!damage_handled) {
-		setHP(getHP() - hitparams.hp);
+		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {			
+		    PlayerSAO *ppp = (PlayerSAO *)puncher; 
+			damage *= ppp->m_physics_override_attack_power;
+		}   
+		setHP(getHP() - damage);		
 	} else { // override client prediction
 		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
 			std::string str = gob_cmd_punched(0, getHP());
@@ -1113,7 +1127,7 @@ int PlayerSAO::punch(v3f dir,
 	actionstream << "Player " << m_player->getName() << " punched by "
 			<< punchername;
 	if (!damage_handled) {
-		actionstream << ", damage " << hitparams.hp << " HP";
+		actionstream << ", damage " << damage << " HP";
 	} else {
 		actionstream << ", damage handled by lua";
 	}

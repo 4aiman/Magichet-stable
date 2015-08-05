@@ -310,7 +310,7 @@ PointedThing getPointedThing(Client *client, v3f player_position,
 				  camera_position, shootline);
 
 		if (selected_object != NULL) {
-			if (selected_object->doShowSelectionBox()) {
+			if (false) { //selected_object->doShowSelectionBox()
 				aabb3f *selection_box = selected_object->getSelectionBox();
 				// Box should exist because object was
 				// returned in the first place
@@ -1163,12 +1163,12 @@ static void updateChat(Client &client, f32 dtime, bool show_debug,
 		ChatBackend &chat_backend, gui::IGUIStaticText *guitext_chat)
 {
 	// Add chat log output for errors to be shown in chat
-	static LogOutputBuffer chat_log_error_buf(LMT_ERROR);
+//	static LogOutputBuffer chat_log_error_buf(LMT_ERROR);
 
 	// Get new messages from error log buffer
-	while (!chat_log_error_buf.empty()) {
-		chat_backend.addMessage(L"", utf8_to_wide(chat_log_error_buf.get()));
-	}
+//	while (!chat_log_error_buf.empty()) {
+//		chat_backend.addMessage(L"", utf8_to_wide(chat_log_error_buf.get()));
+//	}
 
 	// Get new messages from client
 	std::wstring message;
@@ -3132,7 +3132,7 @@ void Game::processClientEvents(CameraOrientation *cam, float *damage_flash)
 			//u16 damage = event.player_damage.amount;
 			//infostream<<"Player damage: "<<damage<<std::endl;
 
-			*damage_flash += 100.0;
+			*damage_flash += 1.0;
 			*damage_flash += 8.0 * event.player_damage.amount;
 
 			player->hurt_tilt_timer = 1.5;
@@ -3145,10 +3145,10 @@ void Game::processClientEvents(CameraOrientation *cam, float *damage_flash)
 			cam->camera_yaw = event.player_force_move.yaw;
 			cam->camera_pitch = event.player_force_move.pitch;
 		} else if (event.type == CE_DEATHSCREEN) {
-			show_deathscreen(&current_formspec, client, gamedef, texture_src,
-					 device, client);
+			client->sendRespawn(); 
+			//show_deathscreen(&current_formspec, client, gamedef, texture_src,	device, client);
 
-			chat_backend->addMessage(L"", L"You died.");
+			//chat_backend->addMessage(L"", L"You died.");
 
 			/* Handle visualization */
 			*damage_flash = 0;
@@ -3731,8 +3731,9 @@ void Game::handleDigging(GameRunData *runData,
 		// I guess nobody will wait for this long
 		runData->dig_time_complete = 10000000.0;
 	} else {
-		runData->dig_time_complete = params.time;
-
+		runData->dig_time_complete = params.time * player->physics_override_efficiency;
+		// this is being printed like 20 times!!!
+		//printf("%f",player->physics_override_efficiency); 
 		if (m_cache_enable_particles) {
 			const ContentFeatures &features =
 					client->getNodeDefManager()->get(n);

@@ -278,7 +278,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("dedicated_server_step", "0.1");
 	settings->setDefault("ignore_world_load_errors", "false");
 	settings->setDefault("remote_media", "");
-	settings->setDefault("debug_log_level", "2");
+	settings->setDefault("debug_log_level", "1");
 	settings->setDefault("emergequeue_limit_total", "256");
 	settings->setDefault("emergequeue_limit_diskonly", "32");
 	settings->setDefault("emergequeue_limit_generate", "32");
@@ -347,7 +347,7 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("viewing_range_nodes_max", "50");
 	settings->setDefault("viewing_range_nodes_min", "20");
 	settings->setDefault("inventory_image_hack", "false");
-
+/*
 	//check for device with small screen
 	float x_inches = ((double) porting::getDisplaySize().X /
 			(160 * porting::getDisplayDensity()));
@@ -356,10 +356,15 @@ void set_default_settings(Settings *settings)
 	}
 	else if (x_inches < 4.5) {
 		settings->setDefault("hud_scaling", "0.6");
-	}
+	} */
 	settings->setDefault("curl_verify_cert","false");
+	settings->setDefault("gui_scaling_filter", "false");
+	settings->setDefault("gui_scaling_filter_txr2img", "false");
 #else
 	settings->setDefault("screen_dpi", "72");
+	settings->setDefault("hud_scaling", "0.7");
+	settings->setDefault("gui_scaling_filter", "true");
+	settings->setDefault("gui_scaling_filter_txr2img", "true");
 #endif
 }
 

@@ -4,20 +4,6 @@
 -- Misc. API functions
 --
 
-<<<<<<< HEAD
-core.timers_to_add = {}
-core.timers = {}
-core.register_globalstep(function(dtime)
-	for _, timer in ipairs(core.timers_to_add) do
-		table.insert(core.timers, timer)
-	end
-	core.timers_to_add = {}
-	local end_ms = os.clock() * 1000 + 50
-	local index = 1
-	while index <= #core.timers do
-		local timer = core.timers[index]
-		timer.time = timer.time - dtime
-=======
 local timers = {}
 local mintime
 local function update_timers(delay)
@@ -27,7 +13,6 @@ local function update_timers(delay)
 		index = index - sub
 		local timer = timers[index]
 		timer.time = timer.time - delay
->>>>>>> 88a6b9f52d6ffd4e351155dee661fe8ea084a9aa
 		if timer.time <= 0 then
 			timer.func(unpack(timer.args or {}))
 			table.remove(timers, index)
@@ -37,7 +22,6 @@ local function update_timers(delay)
 		else
 			mintime = timer.time
 		end
-		if os.clock() * 1000 > end_ms then return end
 	end
 end
 
@@ -108,8 +92,8 @@ function core.get_connected_players()
 	local temp_table = {}
 	for index, value in pairs(player_list) do
 		if value:is_player_connected() then
-		table.insert(temp_table, value)
-	end
+			table.insert(temp_table, value)
+		end
 	end
 	return temp_table
 end
@@ -160,11 +144,14 @@ function core.record_protection_violation(pos, name)
 	end
 end
 
-function freeminer.color(color)
-	assert(#color == 6, "Color must be six characters in length.")
-	return "\v" .. color
-end
-
-function freeminer.colorize(color, message)
-	return freeminer.color(color) .. message .. freeminer.color("ffffff")
+local raillike_ids = {}
+local raillike_cur_id = 0
+function core.raillike_group(name)
+	local id = raillike_ids[name]
+	if not id then
+		raillike_cur_id = raillike_cur_id + 1
+		raillike_ids[name] = raillike_cur_id
+		id = raillike_cur_id
+	end
+	return id
 end

@@ -67,7 +67,8 @@ std::string gob_cmd_punched(s16 damage, s16 result_hp);
 std::string gob_cmd_update_armor_groups(const ItemGroupList &armor_groups);
 
 std::string gob_cmd_update_physics_override(float physics_override_speed,
-		float physics_override_jump, float physics_override_gravity, bool sneak, bool sneak_glitch);
+		float physics_override_jump, float physics_override_gravity, bool sneak, bool sneak_glitch, 
+		float physics_override_fall_tolerance, float physics_override_attack_power, float physics_override_efficiency);
 
 std::string gob_cmd_update_animation(v2f frames, float frame_speed, float frame_blend, bool frame_loop);
 

@@ -34,8 +34,7 @@ local function get_formspec(tabview, name, tabdata)
 --            "image_button[6.53,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
             "image_button[7.8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
             "label[7,1.5;" .. fgettext("Select World:") .. "]" ..
-
---            "checkbox[12,8.70;cb_creative_mode;" .. fgettext("Creative Mode") .. ";" .. dump(core.setting_getbool("creative_mode")) .. "]" ..
+            
             --"checkbox[1000,9.20;cb_enable_damage;" .. fgettext("Enable Damage") .. ";" .. dump(core.setting_getbool("enable_damage")) .. "]" ..
             "checkbox[12,9.50;cb_server_announce;" .. fgettext("Public") .. ";" .. dump(core.setting_getbool("server_announce")) .. "]" ..
             "label[0.2,8.55;" .. fgettext("Name/Password") .. "]" ..
@@ -68,6 +67,12 @@ local function get_formspec(tabview, name, tabdata)
                 menu_render_worldlist() ..
                 ";" .. (index or 1) .. ";true]"
 
+
+        if true then 
+           --print(gamemgr.get_game(index))
+           retval = retval .. "checkbox[12,8.70;cb_creative_mode;" .. fgettext("Creative Mode") .. ";" .. dump(core.setting_getbool("creative_mode")) .. "]" 
+        end
+        
         return retval
 end
 
@@ -94,9 +99,15 @@ local function main_button_handler(this, fields, name, tabdata)
         end
 
         if fields["cb_creative_mode"] then
-                core.setting_set("creative_mode", fields["cb_creative_mode"])
-                core.setting_set("enable_damage", tostring(not fields["cb_creative_mode"]))
-                --print(fields["cb_creative_mode"])
+                minetest.setting_set("creative_mode", fields["cb_creative_mode"])
+                local bool = fields["cb_creative_mode"]
+                if bool == 'true' then
+                   bool = 'false'
+                else
+                   bool = 'true'
+                end
+                minetest.setting_set("enable_damage", bool)
+                minetest.setting_save()
                 return true
         end
 

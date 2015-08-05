@@ -22,17 +22,17 @@ local function add_server_formspec(dialogdata)
                 "box[-100,8.5;200,10;#999999]" ..
                 "box[-100,-10;200,12;#999999]" ..
 
-                "label[4,3;" .. fgettext("Name") .. "]"..
-                "field[6.5,3.4;6,0.5;servername;;]" ..
+                "label[4,3;" .. fgettext("Address") .. "]"..
+                "field[6.5,3.4;6,0.5;te_address;;]" ..
 
-                "label[4,4;" .. fgettext("Address") .. "]"..
-                "field[6.5,4.4;6,0.5;address;;]" ..
+                "label[4,4;" .. fgettext("Port") .. "]"..
+                "field[6.5,4.4;6,0.5;te_port;;30000]" ..
 
-                "label[4,5;" .. fgettext("Port") .. "]"..
-                "field[6.5,5.4;6,0.5;port;;30000]" ..
+                "label[4,5;" .. fgettext("Name") .. "]"..
+                "field[6.5,5.4;6,0.5;te_servername;;]" ..
 
                 "label[4,6;" .. fgettext("Description") .. "]"..
-                "field[6.5,6.4;6,0.5;desc;;Added on ".. os.date() .."]" ..
+                "field[6.5,6.4;6,0.5;te_desc;;Added on ".. os.date() .."]" ..
 
 
         "image_button[8,9.54;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;server_add_confirm;".. fgettext("Add") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
@@ -50,50 +50,53 @@ local function add_server_buttonhandler(this, fields)
 
         if fields["server_add_confirm"]
         or fields["key_enter"] then
-           if fields["address"] and fields["port"] then
+           if fields["te_address"] and fields["te_port"] then           
 
 ----------------------
-           local path = core.get_modpath('')..'/../client/'..core.formspec_escape(core.setting_get("serverlist_file"))
-           local favourites
-           if path then
-              local input = io.open(path, "r")
-              if input then
-                 favourites = input:read("*all")
-                 io.close(input)
-              --else
-                 --gamedata.errormessage = fgettext("Can't find serverlist_file! ("..path..')')
-              end
-           if favourites then
-              favourites = minetest.parse_json(favourites)
-           else
-               favourites = {["list"]={},}
-           end
+		   local path = core.get_modpath('')..'/../client/'..core.formspec_escape(core.setting_get("serverlist_file"))
+		   local favourites
+		   if path then
+			  local input,err,errcode = io.open(path, "r")
+			  if input then
+				 favourites = input:read("*all")
+				 io.close(input)
+			  --else
+				 --gamedata.errormessage = err..' ('..errcode..')'
+			  end
+		   if favourites then
+			  favourites = minetest.parse_json(favourites)
+		   end
+		   if not favourites or not favourites.list then     
+			  favourites = {["list"]={}}
+		   end
+              local servername = fields["te_servername"]              
+              if not servername or servername == "" then servername = fields["te_address"] end
 
-              table.insert(favourites.list,{
+                 table.insert(favourites.list,{
                                             ["address"] = fields["te_address"],
                                             ["description"] = "Saved at ".. os.date(),
-                                            ["name"] = fields["te_address"],
-                                            ["playername"] = fields["te_name"],
-                                            ["playerpassword"] = fields["te_pwd"],
+                                            ["name"] = servername,
                                             ["port"] = fields["te_port"],
+                                            ["favourite"]      = true,
                                            }
                           )
 
-              favourites = minetest.write_json(favourites)
+                 favourites = minetest.write_json(favourites)
 
-              --print(path)
-              local output = io.open(path, "w")
-              if output then
-                 output:write(favourites or '')
-                 io.close(output)
-              else
-                 gamedata.errormessage = err..' ('..errcode..')'
+                 local output = io.open(path, "w")
+                 if output then
+                    output:write(favourites or '')
+                    io.close(output)
+                 else
+                    gamedata.errormessage = err..' ('..errcode..')'
+                 end
               end
-           end
 ----------------------
-
-              asyncOnlineFavourites()
+        
+           --   this:hide()           
+              this.parent:show()
               this:delete()
+              asyncOnlineFavourites()
            end
            return true
         end

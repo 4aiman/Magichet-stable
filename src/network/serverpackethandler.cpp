@@ -1592,7 +1592,7 @@ void Server::handleCommand_Interact(NetworkPacket* pkt)
 					// Well not our problem then
 				}
 				// Clean and long dig
-				else if (params.time > 2.0 && nocheat_t * 1.2 > params.time) {
+				else if (params.time > 2.0 && nocheat_t * 1.2 > params.time*playersao->m_physics_override_efficiency) {
 					// All is good, but grab time from pool; don't care if
 					// it's actually available
 					playersao->getDigPool().grab(params.time);

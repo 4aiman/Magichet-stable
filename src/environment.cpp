@@ -2127,7 +2127,7 @@ void ClientEnvironment::step(float dtime)
 				{
 					// How much the node's viscosity blocks movement, ranges between 0 and 1
 					// Should match the scale at which viscosity increase affects other liquid attributes
-					const f32 viscosity_factor = 0.3;
+					const f32 viscosity_factor = 0.2;
 
 					v3f d_wanted = -speed / lplayer->movement_liquid_fluidity;
 					f32 dl = d_wanted.getLength();
@@ -2166,7 +2166,7 @@ void ClientEnvironment::step(float dtime)
 		speed_diff.X = 0;
 		speed_diff.Z = 0;
 		f32 pre_factor = 1; // 1 hp per node/s
-		f32 tolerance = BS*14; // 5 without damage
+		f32 tolerance = BS*14*lplayer->physics_override_fall_tolerance; // 5 without damage
 		f32 post_factor = 1; // 1 hp per node/s
 		if(info.type == COLLISION_NODE)
 		{

@@ -1834,7 +1834,7 @@ void Client::makeScreenshot(IrrlichtDevice *device)
 
 	std::string filename_base = g_settings->get("screenshot_path")
 			+ DIR_DELIM
-			+ std::string("screenshot_")
+			+ std::string("magichet_screenie_")
 			+ std::string(timetstamp_c);
 	std::string filename_ext = ".png";
 	std::string filename;

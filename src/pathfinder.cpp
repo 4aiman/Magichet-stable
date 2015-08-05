@@ -339,7 +339,7 @@ std::vector<v3s16> pathfinder::get_Path(ServerEnvironment* env,
 #ifdef PATHFINDER_DEBUG
 		print_pathlen();
 #endif
-		ERROR_TARGET << "failed to update cost map"<< std::endl;
+	//	ERROR_TARGET << "failed to update cost map"<< std::endl;
 	}
 
 

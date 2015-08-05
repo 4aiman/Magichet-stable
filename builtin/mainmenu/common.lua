@@ -25,6 +25,7 @@ menudata = {}
 
 --------------------------------------------------------------------------------
 local function render_client_count(n)
+        if not n then return '?' end
         if tonumber(n) > 99 then
                 return '99+'
         elseif tonumber(n) >= 0 then
@@ -57,15 +58,23 @@ function render_favorite(spec,render_details)
 
         local details = ""
 
-        if spec.clients ~= nil and spec.clients_max ~= nil then
-                local clients_color = ''
-                local clients_percent = 100 * spec.clients / spec.clients_max
+        if spec.favourite then
+                details = details .. "1,"
+        else
+                details = details .. "0,"
+        end
+
+                local clients_color = '#ffffff'
+                local clients_percent = 0
+                if spec.clients and spec.clients_max then
+                   clients_percent = 100 * spec.clients / spec.clients_max
+                end
 
                 -- Choose a color depending on how many clients are connected
                 -- (relatively to clients_max)
                 if spec.clients == 0 then
-                        clients_color = ''        -- 0 players: default/white
-                elseif spec.clients == spec.clients_max then
+                        clients_color = '#ffffff' -- 0 players: default/white
+                elseif spec.clients == spec.clients_max and spec.clients_max~=nil then
                         clients_color = '#dd5b5b' -- full server: red (darker)
                 elseif clients_percent <= 60 then
                         clients_color = '#a1e587' -- 0-60%: green
@@ -80,11 +89,8 @@ function render_favorite(spec,render_details)
                                 render_client_count(spec.clients) .. ',' ..
                                 '/,' ..
                                 render_client_count(spec.clients_max) .. ','
-        else
-                details = details .. ',?,/,?,'
-        end
 
-        if spec.creative then
+        if spec.creative and port ~=0 then
                 details = details .. "1,"
         else
                 details = details .. "0,"
@@ -102,7 +108,14 @@ function render_favorite(spec,render_details)
                 details = details .. "0,"
         end
 
+        if spec.password then
+                details = details .. "1,"
+        else
+                details = details .. "0,"
+        end
+        
         details = details .. text
+
     return details
 end
 
@@ -184,13 +197,38 @@ function asyncOnlineFavourites()
 	menudata.favorites = menudata.public_known or {}
 	core.handle_async(
 		function(param)
-            local ret = core.get_favorites("online")
-            local num = core.get_favorites("local")
-            local cou = 0
-            for k,v in ipairs(core.get_favorites("local")) do
-                cou = cou+1
-                table.insert(ret,cou,v)
-            end
+           local ret = core.get_favorites("online")
+----------------------------
+           local cou = 0
+           local path = core.get_modpath('')..'/../client/'..core.formspec_escape(core.setting_get("serverlist_file"))
+           local favourites = {}
+           if path then
+              local input,err,errcode = io.open(path, "r")
+              if input then
+                 favourites = input:read("*all")
+                 io.close(input)
+				  if favourites then
+					 favourites = minetest.parse_json(favourites)					 
+					 if favourites and favourites.list then
+						 for k,v in ipairs(favourites.list) do
+						     cou = cou+1
+						     table.insert(ret,1,v)
+						 end
+					 end
+				  end
+              end
+           end
+		   local ret2 = core.get_favorites("online")	
+		   if ret2 then 
+              for k,v in ipairs(ret2) do
+				  cou = cou+1
+				  table.insert(ret,cou,v)
+			  end
+		   end
+           
+           
+           minetest.serverlist_length = cou
+----------------------------
             return ret
 		end,
 		nil,

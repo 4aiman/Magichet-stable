@@ -930,7 +930,7 @@ void GenericCAO::addToScene(scene::ISceneManager *smgr, ITextureSource *tsrc,
 			m_animated_meshnode->animateJoints(); // Needed for some animations
 			m_animated_meshnode->setScale(v3f(m_prop.visual_size.X,
 					m_prop.visual_size.Y,
-					m_prop.visual_size.X));
+					m_prop.visual_size.X));					
 			u8 li = m_last_light;
 			setMeshColor(m_animated_meshnode->getMesh(), video::SColor(255,li,li,li));
 
@@ -1642,6 +1642,10 @@ void GenericCAO::processMessage(const std::string &data)
 		// these are sent inverted so we get true when the server sends nothing
 		bool sneak = !readU8(is);
 		bool sneak_glitch = !readU8(is);
+		// added to the end of queue to support inferior clients
+		float override_fall_tolerance = readF1000(is);
+		float override_attack_power = readF1000(is);
+		float override_efficiency = readF1000(is);
 
 
 		if(m_is_local_player)
@@ -1652,6 +1656,9 @@ void GenericCAO::processMessage(const std::string &data)
 			player->physics_override_gravity = override_gravity;
 			player->physics_override_sneak = sneak;
 			player->physics_override_sneak_glitch = sneak_glitch;
+			player->physics_override_fall_tolerance = override_fall_tolerance;
+			player->physics_override_attack_power = override_attack_power;
+			player->physics_override_efficiency = override_efficiency;
 		}
 	}
 	else if(cmd == GENERIC_CMD_SET_ANIMATION) {
@@ -1748,7 +1755,7 @@ void GenericCAO::processMessage(const std::string &data)
 				m_reset_textures_timer = 0.05;
 				if(damage >= 2)
 					m_reset_textures_timer += 0.05 * damage;
-				updateTextures("^[brighten");
+				updateTextures("^[colorize:#EE0000:100");
 			}
 		}
 	}
@@ -1808,7 +1815,7 @@ bool GenericCAO::directReportPunch(v3f dir, const ItemStack *punchitem,
 		m_reset_textures_timer = 0.05;
 		if(result.damage >= 2)
 			m_reset_textures_timer += 0.05 * result.damage;
-		updateTextures("^[brighten");
+		updateTextures("^[colorize:#EE0000:100");
 	}
 
 	return false;

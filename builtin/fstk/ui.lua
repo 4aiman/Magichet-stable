@@ -104,7 +104,7 @@ function ui.update()
 		local active_toplevel_ui_elements = 0
 		for key,value in pairs(ui.childlist) do
 			if (value.type == "toplevel") then
-				local retval = value:get_formspec()
+				local retval = value:get_formspec()				
 
 				if retval ~= nil and retval ~= "" then
 					active_toplevel_ui_elements = active_toplevel_ui_elements +1

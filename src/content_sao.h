@@ -343,6 +343,10 @@ public:
 	bool m_physics_override_sneak;
 	bool m_physics_override_sneak_glitch;
 	bool m_physics_override_sent;
+	float m_physics_override_fall_tolerance;
+	float m_physics_override_attack_power;
+	float m_physics_override_efficiency;
+	
 };
 
 #endif

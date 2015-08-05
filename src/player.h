@@ -354,6 +354,10 @@ public:
 	bool physics_override_sneak;
 	bool physics_override_sneak_glitch;
 
+	float physics_override_fall_tolerance;
+	float physics_override_attack_power;
+	float physics_override_efficiency;
+
 	v2s32 local_animations[4];
 	float local_animation_speed;
 

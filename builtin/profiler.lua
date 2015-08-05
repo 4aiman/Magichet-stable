@@ -28,39 +28,39 @@ local function start_profiler()
     started = true
 end
 
-if freeminer.setting_getbool("profiler_autostart") then
+if core.setting_getbool("profiler_autostart") then
     start_profiler()
-    freeminer.after(3, function()
-        freeminer.chat_send_all("The profiler was started. If you don't want this, set " .. freeminer.colorize("61ad6d", "profiler_autostart")
-            .. " to false in " .. freeminer.colorize("61ad6d", "freeminer.conf"))
+    core.after(3, function()
+        core.chat_send_all("The profiler was started. If you don't want this, set " .. core.colorize("61ad6d", "profiler_autostart")
+            .. " to false in " .. core.colorize("61ad6d", "core.conf"))
     end)
 end
 
-freeminer.register_chatcommand("profiler_stop", {
+core.register_chatcommand("profiler_stop", {
     description = "stop the profiler and write report",
     privs = {server=true},
     func = function(name)
         if not started then
-            freeminer.chat_send_player(name, "Profiler has not been started. You can start it using " .. freeminer.colorize("00ffff", "/profiler_start"))
+            core.chat_send_player(name, "Profiler has not been started. You can start it using " .. core.colorize("00ffff", "/profiler_start"))
             return
         end
 
         ProFi:stop()
         ProFi:writeReport("profile.txt")
 
-        freeminer.chat_send_player(name, "Profiler is stopped.")
+        core.chat_send_player(name, "Profiler is stopped.")
     end,
 })
 
-freeminer.register_chatcommand("profiler_start", {
+core.register_chatcommand("profiler_start", {
     description = "start the profiler",
     privs = {server=true},
     func = function(name)
         if started then
-            freeminer.chat_send_player(name, "Profiler is already running.")
+            core.chat_send_player(name, "Profiler is already running.")
             return
         end
         start_profiler()
-        freeminer.chat_send_player(name, "Profiler is started.")
+        core.chat_send_player(name, "Profiler is started.")
     end
 })

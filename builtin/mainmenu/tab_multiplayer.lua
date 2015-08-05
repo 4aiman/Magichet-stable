@@ -16,7 +16,9 @@
 --51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --------------------------------------------------------------------------------
+local last_selected_server
 local function get_formspec(tabview, name, tabdata)
+        --print('last selected IN get_fs: '..dump(last_selected_server))
         local retval =
                 "size[16,11]"..
                 "box[-100,8.5;200,10;#999999]" ..
@@ -38,17 +40,18 @@ local function get_formspec(tabview, name, tabdata)
 
 
         --if not core.setting_getbool("public_serverlist") then
-        if (core.get_table_index("favourites") or 10000) <= #core.get_favorites("local") then
+        if last_selected_server and last_selected_server.favourite then
                 retval = retval ..
-                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_delete_favorite;" .. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[3.2,9.55;0.8,0.8;"..mm_texture.basetexturedir.."favourite_btn.png;btn_mp_favour;-;true;false;"..mm_texture.basetexturedir.."menu_button_b.png]"
         else
                 retval = retval ..
-                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;add_server;" .. fgettext("Add") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[3.2,9.55;0.8,0.8;"..mm_texture.basetexturedir.."favourite_btn.png;btn_mp_favour;+;true;false;"..mm_texture.basetexturedir.."menu_button_b.png]"
         end
 
         retval = retval ..
                 "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mp_connect;" .. fgettext("Connect") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[3.2,9.55;0.8,0.8;"..mm_texture.basetexturedir.."server_flags_favourite.png;btn_mp_favour;;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;add_server;" .. fgettext("Add") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                
 
                 "label[8,8;" .. fgettext("Name") .. ":]" ..
                 "field[8.3,9;3.95,0.8;te_name;;" ..
@@ -56,7 +59,6 @@ local function get_formspec(tabview, name, tabdata)
                 "label[12,8;" .. fgettext("Password") .. ":]" ..
                 "pwdfield[12.3,9;4,0.8;te_pwd;]" ..
                 "textarea[9.3,0;2.5,3.0;;"
-
 
         if tabdata.fav_selected ~= nil and
                 menudata.favorites[tabdata.fav_selected] ~= nil and
@@ -72,24 +74,26 @@ local function get_formspec(tabview, name, tabdata)
         local function image_column(tooltip, flagname)
                 local ret = "image," ..
                         "tooltip=" .. core.formspec_escape(tooltip) .. ","
-                        if flagname ~= 'favourite' then
+      --                  if flagname ~= 'favourite' then
                            ret = ret .. "0=" .. core.formspec_escape(defaulttexturedir .. "blank.png") .. ","
-                        else
-                           ret = ret .. "0=" .. core.formspec_escape(defaulttexturedir .. "server_flags_" .. flagname .. "_off.png") .. ","
-                        end
-                        ret = ret .. "1=" .. core.formspec_escape(defaulttexturedir .. "server_flags_" .. flagname .. ".png")
+--                        else                        
+  --                         ret = ret .. "0=" .. core.formspec_escape(defaulttexturedir .. "server_flags_" .. flagname .. "_off.png") .. ","
+    --                    end
+                           ret = ret .. "1=" .. core.formspec_escape(defaulttexturedir .. "server_flags_" .. flagname .. ".png")
                 return ret
         end
         retval = retval .. "tablecolumns[" ..
-                        "color,span=3;" ..
+                        image_column("Favourite", "favourite") .. ",align=right;"..
+                        "color,span=3;" ..                        
                         "text,align=right;" ..                -- clients
                         "text,align=center,padding=0.25;" ..  -- "/"
                         "text,align=right,padding=0.25;" ..   -- clients_max
                         image_column("Creative mode", "creative") .. ",padding=1;" ..
                         image_column("Damage enabled", "damage") .. ",padding=0.25;" ..
                         image_column("PvP enabled", "pvp") .. ",padding=0.25;" ..
-                        "text,padding=1]"--..
-                        --image_column("Favourite", "favourite") .. ",align=right]"
+                        image_column("No password allowed", "password") .. ",padding=0.25;" ..
+                        "text,padding=1]"
+                        
 
         retval = retval ..
                  "tableoptions[background=#00000000;border=false]"..
@@ -99,13 +103,16 @@ local function get_formspec(tabview, name, tabdata)
         --   asyncOnlineFavourites()
         --end
 
+
         if #menudata.favorites > 0 then
                 retval = retval .. render_favorite(menudata.favorites[1])
 
                 for i=2,#menudata.favorites,1 do
-                        retval = retval .. "," .. render_favorite(menudata.favorites[i])
+                    retval = retval .. "," .. render_favorite(menudata.favorites[i])
                 end
         end
+      --  retval = retval..','
+        
 
         if tabdata.fav_selected ~= nil then
                 retval = retval .. ";" .. tabdata.fav_selected .. "]"
@@ -118,6 +125,7 @@ end
 
 --------------------------------------------------------------------------------
 local function main_button_handler(tabview, fields, name, tabdata)
+        --print('fields in btn_handler: '..dump(fields)) 
         if not tabdata then tabdata = {} end
 
         if fields["add_server"] ~= nil then
@@ -131,11 +139,13 @@ local function main_button_handler(tabview, fields, name, tabdata)
         if fields["te_name"] ~= nil then
                 gamedata.playername = fields["te_name"]
                 core.setting_set("name", fields["te_name"])
-        end
-
+        end        
+        
         if fields["favourites"] ~= nil then
                 local event = core.explode_table_event(fields["favourites"])
+                --print('Event dumo (btn handler): '..dump(event))
                 if event.type == "DCL" then
+                   if menudata.favorites[event.row] ~= nil then                   
                         if event.row <= #menudata.favorites then
                                 gamedata.address    = menudata.favorites[event.row].address
                                 gamedata.port       = menudata.favorites[event.row].port
@@ -154,17 +164,20 @@ local function main_button_handler(tabview, fields, name, tabdata)
                                         gamedata.port ~= nil then
                                         core.setting_set("address",gamedata.address)
                                         core.setting_set("remote_port",gamedata.port)
-                                        core.start()
+                                     --   core.start()
                                 end
                         end
                         return true
+                   end
                 end
 
                 if event.type == "CHG" then
-                        if event.row <= #menudata.favorites then
+                   last_selected_server = menudata.favorites[event.row]                                 
+                   --print('last selected in CHG:  '..dump(last_selected_server))
+                        if event.row <= #menudata.favorites then                           
                                 local address = menudata.favorites[event.row].address
-                                local port    = menudata.favorites[event.row].port
-
+                                local port    = menudata.favorites[event.row].port                                   
+                                
                                 if address ~= nil and
                                         port ~= nil then
                                         core.setting_set("address",address)
@@ -173,6 +186,7 @@ local function main_button_handler(tabview, fields, name, tabdata)
 
                                 tabdata.fav_selected = event.row
                         end
+                    
                         return true
                 end
         end
@@ -219,44 +233,72 @@ local function main_button_handler(tabview, fields, name, tabdata)
         end
 
         if fields["btn_mp_favour"] ~= nil then
-           local current_favourite = core.get_table_index("favourites")
-           local path = core.get_modpath('')..'/../client/'..core.formspec_escape(core.setting_get("serverlist_file"))
-           local favourites
-           if path then
-              local input,err,errcode = io.open(path, "r")
-              if input then
-                 favourites = input:read("*all")
-                 io.close(input)
-              --else
-                 --gamedata.errormessage = err..' ('..errcode..')'
-              end
-           if favourites then
-              favourites = minetest.parse_json(favourites)
-           else
-               favourites = {["list"]={},}
-           end
-              table.insert(favourites.list,{
-                                            ["address"] = fields["te_address"],
-                                            ["description"] = "Saved at ".. os.date(),
-                                            ["name"] = fields["te_address"],
-                                            ["playername"] = fields["te_name"],
-                                            ["playerpassword"] = fields["te_pwd"],
-                                            ["port"] = fields["te_port"],
-                                           }
-                          )
-
-                          favourites = minetest.write_json(favourites)
-
-              local output,err,errcode = io.open(path, "w")
-              if output then
-                 output:write(favourites or '')
-                 io.close(output)
-              else
-                 --gamedata.errormessage = fgettext("Can't write to serverlist_file! ("..path..')')
-                 gamedata.errormessage = err..' ('..errcode..')'
-              end
-           end
-           asyncOnlineFavourites()
+		   local current_favourite = core.get_table_index("favourites")
+		   local path = core.get_modpath('')..'/../client/'..core.formspec_escape(core.setting_get("serverlist_file"))
+		   local favourites
+		   if path then
+			  local input,err,errcode = io.open(path, "r")
+			  if input then
+				 favourites = input:read("*all")
+				 io.close(input)
+			  --else
+				 --gamedata.errormessage = err..' ('..errcode..')'
+			  end
+		   if favourites then
+			  favourites = minetest.parse_json(favourites)
+		   end
+		   if not favourites or not favourites.list then     
+			  favourites = {["list"]={}}
+		   end
+		   
+ 		   local servername = menudata.favorites[current_favourite].name
+           
+           if last_selected_server and last_selected_server.favourite then 
+              local favs = {}
+              local count = 0
+              for i,v in ipairs(favourites.list) do                  
+                  if  (last_selected_server.name == v.name or servername == v.name)
+                  and (last_selected_server.address == v.address or last_selected_server.name == v.address)
+                  and (last_selected_server.port == v.port)
+                  then
+                      print('Removing "'.. v.name ..'" from favourites')  
+                  else
+                     count = count +1
+                     table.insert(favs,count,v)
+                  end
+              end       
+              favourites.list = favs    
+             -- last_selected_server.favourite = nil
+           else              
+			  table.insert(favourites.list,{
+											["address"]        = fields["te_address"],
+											["description"]    = "Saved on ".. os.date(),
+											["name"]           = servername or last_selected_server.name,
+											["playername"]     = fields["te_name"],
+											["playerpassword"] = fields["te_pwd"],
+											["port"]           = fields["te_port"],
+											["creative"]       = last_selected_server.creative,
+											["pvp"]            = last_selected_server.pvp,
+											["password"]       = last_selected_server.password,
+											["clients_max"]    = last_selected_server.clients_max,
+											["damage"]         = last_selected_server.damage,
+											["favourite"]      = true,
+										   }
+						  )				  
+			  print('Adding "'.. (servername or last_selected_server.name) ..'" to favourites')  
+		   end
+              favourites = minetest.write_json(favourites)
+				  local output,err,errcode = io.open(path, "w")
+				  if output then
+					 output:write(favourites or '')
+					 io.close(output)
+				  else
+					 --gamedata.errormessage = fgettext("Can't write to serverlist_file! ("..path..')')
+					 gamedata.errormessage = err..' ('..errcode..')'
+				  end
+			   end
+			   asyncOnlineFavourites()
+           
         end
 
         if fields["btn_delete_favorite"] ~= nil then
@@ -321,5 +363,5 @@ tab_multiplayer = {
         caption = fgettext("Client"),
         cbf_formspec = get_formspec,
         cbf_button_handler = main_button_handler,
-       -- on_change = on_change
+        --on_change = on_change
         }
