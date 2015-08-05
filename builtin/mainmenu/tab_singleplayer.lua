@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,6 @@ local function singleplayer_refresh_gamebar()
             for j=1,#gamemgr.games,1 do
                 if ("game_btnbar_" .. gamemgr.games[j].id == key) then
                     mm_texture.update("singleplayer", gamemgr.games[j])
-                    --core.set_topleft_text(gamemgr.games[j].name)
                     core.setting_set("menu_last_game",gamemgr.games[j].id)
                     menudata.worldlist:set_filtercriteria(gamemgr.games[j].id)
                     return true
@@ -217,14 +216,12 @@ local function on_change(type, old_tab, new_tab)
 
         if game then
             menudata.worldlist:set_filtercriteria(game.id)
-            --core.set_topleft_text(game.name)
             mm_texture.update("singleplayer",game)
         end
         buttonbar:show()
     else
         menudata.worldlist:set_filtercriteria(nil)
         buttonbar:hide()
-        --core.set_topleft_text("")
         mm_texture.update(new_tab,nil)
     end
 end

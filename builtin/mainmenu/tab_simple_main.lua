@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2013 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -51,7 +51,6 @@ local function on_activate(type,old_tab,new_tab)
     if type == "LEAVE" then
         return
     end
-    core.set_topleft_text('Multicraft II')
     if core.setting_getbool("public_serverlist") then
         asyncOnlineFavourites()
     else

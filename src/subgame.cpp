@@ -65,7 +65,7 @@ struct GameFindPath
 
 Strfnd getSubgamePathEnv() {
 	std::string sp;
-	char *subgame_path = getenv("MINETEST_SUBGAME_PATH");
+	char *subgame_path = getenv("MAGICHET_SUBGAME_PATH");
 
 	if(subgame_path) {
 		sp = std::string(subgame_path);

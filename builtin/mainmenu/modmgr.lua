@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2013 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -195,16 +195,19 @@ function modmgr.identify_modname(modpath,filename)
 		while line~= nil do
 			local modname = nil
 
-			if line:find("minetest.register_tool") then
+			if line:find("magichet.register_tool") 
+			or line:find("minetest.register_tool") then
 				modname = modmgr.parse_register_line(line)
 			end
 
-			if line:find("minetest.register_craftitem") then
+			if line:find("magichet.register_craftitem")
+			or line:find("minetest.register_craftitem") then
 				modname = modmgr.parse_register_line(line)
 			end
 
 
-			if line:find("minetest.register_node") then
+			if line:find("magichet.register_node")
+			or line:find("minetest.register_node") then
 				modname = modmgr.parse_register_line(line)
 			end
 

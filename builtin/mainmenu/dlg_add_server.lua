@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,7 @@ local function add_server_buttonhandler(this, fields)
 				 --gamedata.errormessage = err..' ('..errcode..')'
 			  end
 		   if favourites then
-			  favourites = minetest.parse_json(favourites)
+			  favourites = core.parse_json(favourites)
 		   end
 		   if not favourites or not favourites.list then     
 			  favourites = {["list"]={}}
@@ -81,7 +81,7 @@ local function add_server_buttonhandler(this, fields)
                                            }
                           )
 
-                 favourites = minetest.write_json(favourites)
+                 favourites = core.write_json(favourites)
 
                  local output = io.open(path, "w")
                  if output then

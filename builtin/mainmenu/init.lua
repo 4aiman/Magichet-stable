@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -207,7 +207,7 @@ local function init_globals()
     ui.update()
 
     core.sound_play("main_menu", true)
-
+    core.set_topleft_text("")
 end
 
 init_globals()

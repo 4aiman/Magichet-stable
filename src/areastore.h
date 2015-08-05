@@ -1,5 +1,5 @@
 /*
-Minetest
+Mahgichet
 Copyright (C) 2015 est31 <mtest31@outlook.com>
 
 This program is free software; you can redistribute it and/or modify

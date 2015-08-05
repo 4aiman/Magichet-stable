@@ -1,4 +1,4 @@
--- Minetest: builtin/misc_helpers.lua
+--Magichet: builtin/misc_helpers.lua
 
 --------------------------------------------------------------------------------
 function basic_dump(o)
@@ -461,9 +461,9 @@ if INIT == "game" then
 --implies infinite stacks when performing a 6d rotation.
 --------------------------------------------------------------------------------
 
-	minetest.rotate_node = function(itemstack, placer, pointed_thing)
-		minetest.rotate_and_place(itemstack, placer, pointed_thing,
-		minetest.setting_getbool("creative_mode"), 
+	core.rotate_node = function(itemstack, placer, pointed_thing)
+		core.rotate_and_place(itemstack, placer, pointed_thing,
+		core.setting_getbool("creative_mode"), 
 		{invert_wall = placer:get_player_control().sneak})
 		return itemstack
 	end
@@ -474,9 +474,9 @@ if INIT == "game" then
 -- them having to copy&paste the entire node definition.
 --------------------------------------------------------------------------------
 
-	function minetest.clone_node(name)
+	function core.clone_node(name)
 		node2={}
-		node=minetest.registered_nodes[name]
+		node=core.registered_nodes[name]
 		for k,v in pairs(node) do
 			node2[k]=v
 		end
@@ -491,21 +491,21 @@ if minetest then
 	local dirs1 = { 9, 18, 7, 12 }
 	local dirs2 = { 20, 23, 22, 21 }
 
-	function minetest.rotate_and_place(itemstack, placer, pointed_thing, infinitestacks, orient_flags)
+	function core.rotate_and_place(itemstack, placer, pointed_thing, infinitestacks, orient_flags)
 		orient_flags = orient_flags or {}
 
-		local node = minetest.get_node(pointed_thing.under)
-		if not minetest.registered_nodes[node.name]
-		   or not minetest.registered_nodes[node.name].on_rightclick then
+		local node = core.get_node(pointed_thing.under)
+		if not core.registered_nodes[node.name]
+		   or not core.registered_nodes[node.name].on_rightclick then
 
 			local above = pointed_thing.above
 			local under = pointed_thing.under
 			local pitch = placer:get_look_pitch()
-			local pname = minetest.get_node(under).name
-			local node = minetest.get_node(above)
-			local fdir = minetest.dir_to_facedir(placer:get_look_dir())
+			local pname = core.get_node(under).name
+			local node = core.get_node(above)
+			local fdir = core.dir_to_facedir(placer:get_look_dir())
 			local wield_name = itemstack:get_name()
-			local reg_node = minetest.registered_nodes[pname]
+			local reg_node = core.registered_nodes[pname]
 
 			if not reg_node or not reg_node.on_rightclick then
 
@@ -519,7 +519,7 @@ if minetest then
 					iswall = false
 				end
 
-				reg_node = minetest.registered_nodes[minetest.get_node(pos1).name]
+				reg_node = core.registered_nodes[core.get_node(pos1).name]
 				if not reg_node or not reg_node.buildable_to then
 					return
 				end
@@ -538,18 +538,18 @@ if minetest then
 				end
 
 				if iswall then
-					minetest.add_node(pos1, {name = wield_name, param2 = dirs1[fdir+1] })
+					core.add_node(pos1, {name = wield_name, param2 = dirs1[fdir+1] })
 				elseif isceiling then
 					if orient_flags.force_facedir then
-						minetest.add_node(pos1, {name = wield_name, param2 = 20 })
+						core.add_node(pos1, {name = wield_name, param2 = 20 })
 					else
-						minetest.add_node(pos1, {name = wield_name, param2 = dirs2[fdir+1] })
+						core.add_node(pos1, {name = wield_name, param2 = dirs2[fdir+1] })
 					end
 				else -- place right side up
 					if orient_flags.force_facedir then
-						minetest.add_node(pos1, {name = wield_name, param2 = 0 })
+						core.add_node(pos1, {name = wield_name, param2 = 0 })
 					else
-						minetest.add_node(pos1, {name = wield_name, param2 = fdir })
+						core.add_node(pos1, {name = wield_name, param2 = fdir })
 					end
 				end
 
@@ -559,7 +559,7 @@ if minetest then
 				end
 			end
 		else
-			minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack)
+			core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack)
 		end
 	end
 

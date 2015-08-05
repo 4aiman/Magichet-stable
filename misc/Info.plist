@@ -5,10 +5,10 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>../Resources/minetest</string>
+	<string>../Resources/magichet</string>
 	<key>CFBundleIconFile</key>
-	<string>minetest.icns</string>
+	<string>magichet.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.freeminer.magichet</string>
+	<string>org.magichet.magichet</string>
 </dict>
 </plist>

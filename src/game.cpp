@@ -1037,7 +1037,7 @@ static inline void create_formspec_menu(GUIFormSpecMenu **cur_formspec,
 #ifdef __ANDROID__
 #define SIZE_TAG "size[11,5.5]"
 #else
-#define SIZE_TAG "size[11,5.5,true]" // Fixed size on desktop
+#define SIZE_TAG "size[11,5.5]" // Fixed size on desktop
 #endif
 
 static void show_chat_menu(GUIFormSpecMenu **cur_formspec,
@@ -1188,7 +1188,7 @@ static void updateChat(Client &client, f32 dtime, bool show_debug,
 	guitext_chat->setText(recent_chat.c_str());
 
 	// Update gui element size and position
-	s32 chat_y = 5 + line_height;
+	s32 chat_y = 5;// + line_height;
 
 	if (show_debug)
 		chat_y += line_height;
@@ -4111,26 +4111,43 @@ void Game::updateGui(float *statustext_time, const RunStats &stats,
 
 		std::ostringstream os(std::ios_base::binary);
 		os << std::fixed
-		  // << PROJECT_NAME_C " " << g_version_hash
+		   << PROJECT_NAME_C ": "
 		   << " FPS = " << fps
-		   << " (R: range_all=" << draw_control->range_all << ")"
+		   << "; range_all=" << draw_control->range_all 
 		   << std::setprecision(0)
-		   << " drawtime = " << drawtime_avg
+		   << "; drawtime = " << drawtime_avg
 		   << std::setprecision(1)
-		   << ", dtime_jitter = "
+		   << "; dtime_jitter = "
 		   << (stats.dtime_jitter.max_fraction * 100.0) << " %"
 		   << std::setprecision(1)
-		   << ", v_range = " << draw_control->wanted_range
+		   << "; v_range = " << draw_control->wanted_range
 		   << std::setprecision(3)
-		   << ", RTT = " << client->getRTT();
+		   << "; RTT = " << client->getRTT()
+           << std::setprecision(1) << std::fixed
+		   << "; pos=(" << (player_position.X / BS)
+		   << ", " << (player_position.Y / BS)
+		   << ", " << (player_position.Z / BS)
+		   << ")"
+		   << ";\n(yaw=" << (wrapDegrees_0_360(cam.camera_yaw))
+		   << " " << yawToDirectionString(cam.camera_yaw)
+		   << "); (seed = " << ((u64)client->getMapSeed())
+		   << ")";
+		   
 		guitext->setText(utf8_to_wide(os.str()).c_str());
 		guitext->setVisible(true);
-	} else if (flags.show_hud || flags.show_chat) {
-		std::ostringstream os(std::ios_base::binary);
-		os << " ";
-		//os << PROJECT_NAME_C " " << g_version_hash;
-		guitext->setText(utf8_to_wide(os.str()).c_str());
-		guitext->setVisible(true);
+		
+		if (runData.pointed_old.type == POINTEDTHING_NODE) {
+			ClientMap &map = client->getEnv().getClientMap();
+			const INodeDefManager *nodedef = client->getNodeDefManager();
+			MapNode n = map.getNodeNoEx(runData.pointed_old.node_undersurface);
+			if (n.getContent() != CONTENT_IGNORE && nodedef->get(n).name != "unknown") {
+				const ContentFeatures &features = nodedef->get(n);
+          		std::string msg = " (pointing_at = " + nodedef->get(n).name + " - " + features.tiledef[0].name.c_str() + ")";
+		        statustext = utf8_to_wide(msg);
+		        *statustext_time = 0;
+			}
+		}
+
 	} else {
 		guitext->setVisible(false);
 	}
@@ -4138,45 +4155,9 @@ void Game::updateGui(float *statustext_time, const RunStats &stats,
 	if (guitext->isVisible()) {
 		core::rect<s32> rect(
 				5,              5,
-				screensize.X,   5 + g_fontengine->getTextHeight()
+				screensize.X - 5 ,   5 + g_fontengine->getTextHeight()
 		);
 		guitext->setRelativePosition(rect);
-	}
-
-	if (flags.show_debug) {
-		std::ostringstream os(std::ios_base::binary);
-		os << std::setprecision(1) << std::fixed
-		   //<< "(" << (player_position.X / BS)
-		   //<< ", " << (player_position.Y / BS)
-		   //<< ", " << (player_position.Z / BS)
-		   //<< ")"
-		   << " (yaw=" << (wrapDegrees_0_360(cam.camera_yaw))
-		   << " " << yawToDirectionString(cam.camera_yaw)
-		   << ") (seed = " << ((u64)client->getMapSeed())
-		   << ")";
-
-		if (runData.pointed_old.type == POINTEDTHING_NODE) {
-			ClientMap &map = client->getEnv().getClientMap();
-			const INodeDefManager *nodedef = client->getNodeDefManager();
-			MapNode n = map.getNodeNoEx(runData.pointed_old.node_undersurface);
-			if (n.getContent() != CONTENT_IGNORE && nodedef->get(n).name != "unknown") {
-				const ContentFeatures &features = nodedef->get(n);
-				os << " (pointing_at = " << nodedef->get(n).name
-				   << " - " << features.tiledef[0].name.c_str()
-				   << ")";
-			}
-		}
-
-		guitext2->setText(utf8_to_wide(os.str()).c_str());
-		guitext2->setVisible(true);
-
-		core::rect<s32> rect(
-				screensize.Y-120, 5 + g_fontengine->getTextHeight(),
-				screensize.X,   screensize.Y-120 - g_fontengine->getTextHeight() * 2
-		);
-		guitext2->setRelativePosition(rect);
-	} else {
-		guitext2->setVisible(false);
 	}
 
 	guitext_info->setText(infotext.c_str());

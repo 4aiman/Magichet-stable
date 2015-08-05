@@ -9,9 +9,8 @@
 print = core.debug
 math.randomseed(os.time())
 os.setlocale("C", "numeric")
-minetest = core
-freeminer = core
 magichet = core
+minetest = core
 
 -- Load other files
 local scriptdir = core.get_builtin_path()..DIR_DELIM

@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2013 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -271,7 +271,7 @@ local function formspec(tabview, name, tabdata)
         "dropdown[5.85,5.1;3.85;dd_video_driver;"
                                 .. driver_formspec_string .. ";" .. driver_current_idx .. "]" ..
         "tooltip[dd_video_driver;" ..
-                fgettext("Restart minetest for driver change to take effect") .. "]"
+                fgettext("Restart magichet for driver change to take effect") .. "]"
 
 
 

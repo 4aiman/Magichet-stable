@@ -1,22 +1,19 @@
-<<<<<<< HEAD
 License of Magichet engine source code
 --------------------------------------
 
 Magichet
-=======
-Minetest
 ========
 
-An InfiniMiner/Minecraft inspired game.
+A Minecraft inspired game.
 
 Copyright (c) 2010-2013 Perttu Ahola <celeron55@gmail.com>
 and contributors (see source file comments and the version control log)
 
 In case you downloaded the source code:
 ---------------------------------------
-If you downloaded the Minetest Engine source code in which this file is
-contained, you probably want to download the minetest_game project too:
-  https://github.com/minetest/minetest_game/
+If you downloaded the Magichet Engine source code in which this file is
+contained, you probably want to download the magichet project too:
+  https://github.com/4aiman/magichet/
 See the README.txt in it.
 
 Further documentation
@@ -25,7 +22,7 @@ Further documentation
 - Wiki: http://wiki.minetest.net/
 - Developer wiki: http://dev.minetest.net/
 - Forum: http://forum.minetest.net/
-- Github: https://github.com/minetest/minetest/
+- Github: https://github.com/4aiman/magichet/
 - doc/ directory of source distribution
 
 This game is not finished
@@ -39,7 +36,7 @@ Default Controls
 - Space: jump/climb
 - Shift: sneak/go down
 - Q: drop itemstack (+ SHIFT for single item)
-- I: inventory
+- E: inventory
 - Mouse: turn/look
 - Mouse left: dig/punch
 - Mouse right: place/use
@@ -62,10 +59,11 @@ Default Controls
 - F5:  Toogle through debug info screens
 - F6:  Toogle through output data
 - F7:  Toggle through camera modes
+- F9:  On/off/toggle through minimap modes
 - F10: Show/Hide console
-- F12: Take screenshot
+- F12: Take a screenshot
 
-- Settable in the configuration file, see the section below.
+  ^ Those are settable in the configuration file, see the section below.
 
 Paths
 ------

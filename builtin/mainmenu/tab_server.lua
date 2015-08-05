@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -99,15 +99,15 @@ local function main_button_handler(this, fields, name, tabdata)
         end
 
         if fields["cb_creative_mode"] then
-                minetest.setting_set("creative_mode", fields["cb_creative_mode"])
+                core.setting_set("creative_mode", fields["cb_creative_mode"])
                 local bool = fields["cb_creative_mode"]
                 if bool == 'true' then
                    bool = 'false'
                 else
                    bool = 'true'
                 end
-                minetest.setting_set("enable_damage", bool)
-                minetest.setting_save()
+                core.setting_set("enable_damage", bool)
+                core.setting_save()
                 return true
         end
 

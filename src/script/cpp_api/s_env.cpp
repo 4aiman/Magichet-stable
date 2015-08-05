@@ -66,7 +66,7 @@ void ScriptApiEnv::player_event(ServerActiveObject* player, std::string type)
 		return;
 
 	// Get minetest.registered_playerevents
-	lua_getglobal(L, "minetest");
+	lua_getglobal(L, "magichet");
 	lua_getfield(L, -1, "registered_playerevents");
 
 	// Call callbacks

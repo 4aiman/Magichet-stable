@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -208,7 +208,7 @@ function asyncOnlineFavourites()
                  favourites = input:read("*all")
                  io.close(input)
 				  if favourites then
-					 favourites = minetest.parse_json(favourites)					 
+					 favourites = core.parse_json(favourites)					 
 					 if favourites and favourites.list then
 						 for k,v in ipairs(favourites.list) do
 						     cou = cou+1
@@ -227,7 +227,7 @@ function asyncOnlineFavourites()
 		   end
            
            
-           minetest.serverlist_length = cou
+           core.serverlist_length = cou
 ----------------------------
             return ret
 		end,

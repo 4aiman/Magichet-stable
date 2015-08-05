@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -245,7 +245,7 @@ local function main_button_handler(tabview, fields, name, tabdata)
 				 --gamedata.errormessage = err..' ('..errcode..')'
 			  end
 		   if favourites then
-			  favourites = minetest.parse_json(favourites)
+			  favourites = core.parse_json(favourites)
 		   end
 		   if not favourites or not favourites.list then     
 			  favourites = {["list"]={}}
@@ -287,7 +287,7 @@ local function main_button_handler(tabview, fields, name, tabdata)
 						  )				  
 			  print('Adding "'.. (servername or last_selected_server.name) ..'" to favourites')  
 		   end
-              favourites = minetest.write_json(favourites)
+              favourites = core.write_json(favourites)
 				  local output,err,errcode = io.open(path, "w")
 				  if output then
 					 output:write(favourites or '')

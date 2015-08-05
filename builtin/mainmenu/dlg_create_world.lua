@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -22,13 +22,9 @@ local function create_world_formspec(dialogdata)
         local current_mg   = core.setting_get("mg_name")
 
         local mglist = ""
-        local selindex = 1
+        local selindex = 3
         local i = 1
         for k,v in pairs(mapgens) do
-                if current_mg == v then
-                        selindex = i
-                end
-                i = i + 1
                 mglist = mglist .. v .. ","
         end
         mglist = mglist:sub(1, -2)
@@ -45,6 +41,7 @@ local function create_world_formspec(dialogdata)
         end
 
         current_seed = core.formspec_escape(current_seed)
+        print(selindex)
         local retval =
                 "size[16,11]"..
                 "bgcolor[#00000070;true]"..
@@ -71,11 +68,11 @@ local function create_world_formspec(dialogdata)
         if #gamemgr.games == 0 then
                 retval = retval .. "box[4,7;8,1;#ff8800]label[4.25,7;" ..
                                 fgettext("You have no subgames installed.") .. "]label[4.25,7.4;" ..
-                                fgettext("Download one from minetest.net") .. "]"
+                                fgettext("Download one") .. "]"
         elseif #gamemgr.games == 1 and gamemgr.games[1].id == "minimal" then
                 retval = retval .. "box[3.50,7;9,1;#ff8800]label[3.75,7;" ..
                                 fgettext("Warning: The minimal development test is meant for developers.") .. "]label[3.75,7.4;" ..
-                                fgettext("Download a subgame, such as minetest_game, from minetest.net") .. "]"
+                                fgettext("Download a subgame, such as magichet") .. "]"
         end
 
         return retval

@@ -1,4 +1,4 @@
---Minetest
+--Magichet
 --Copyright (C) 2014 sapier
 --
 --This program is free software; you can redistribute it and/or modify
@@ -73,7 +73,7 @@ local function get_formspec(tabview, name, tabdata)
 		if not file_exists(infofile) then
 			infofile = current_texture_path ..DIR_DELIM.."info.txt"
 			if file_exists(infofile) then
-				minetest.log("info.txt is depreciated. description.txt should be used instead.");
+				core.log("info.txt is depreciated. description.txt should be used instead.");
 			end
 		end
         local infotext = ""
