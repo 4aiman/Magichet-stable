@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "player.h"
 #include <list>
+#include "environment.h"
 
 class Environment;
 class GenericCAO;
@@ -50,7 +51,7 @@ public:
 	void move(f32 dtime, Environment *env, f32 pos_max_d,
 			std::vector<CollisionInfo> *collision_info);
 
-	void applyControl(float dtime);
+	void applyControl(float dtime, ClientEnvironment *env);
 
 	v3s16 getStandingNodePos();
 
