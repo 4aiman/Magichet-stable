@@ -51,7 +51,7 @@ local function get_formspec(tabview, name, tabdata)
                        "box[-100,8.5;200,10;#999999]" ..
                        "box[-100,-10;200,12;#999999]" ..
                        "label[4,-0.25;".. fgettext("Select texture pack:") .. "]"..
-                       "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                       "image_button[12,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
                        "textlist[0,2.0;15.8,6.25;TPs;"
 
         local current_texture_path = core.setting_get("texture_path")        

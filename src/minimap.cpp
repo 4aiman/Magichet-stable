@@ -474,8 +474,8 @@ void Mapper::drawMinimap()
 	core::matrix4 oldViewMat = driver->getTransform(video::ETS_VIEW);
 
 	driver->setViewPort(core::rect<s32>(
-		screensize.X - size - 10, 10,
-		screensize.X - 10, size + 10));
+		screensize.X - size - 10, (screensize.Y - size)/2 - 10,
+		screensize.X - 10, (screensize.Y + size)/2 - 10));
 	driver->setTransform(video::ETS_PROJECTION, core::matrix4());
 	driver->setTransform(video::ETS_VIEW, core::matrix4());
 

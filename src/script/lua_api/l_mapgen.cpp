@@ -775,7 +775,7 @@ int ModApiMapgen::l_register_decoration(lua_State *L)
 	//// Get biomes associated with this decoration (if any)
 	lua_getfield(L, index, "biomes");
 	if (get_biome_list(L, -1, biomemgr, &deco->biomes))
-		errorstream << "register_decoration: couldn't get all biomes " << std::endl;
+		errorstream << "register_decoration: '" << deco->name << "' uses undefine biomes" << std::endl;
 	lua_pop(L, 1);
 
 	//// Handle decoration type-specific parameters
@@ -922,7 +922,7 @@ int ModApiMapgen::l_register_ore(lua_State *L)
 	//// Get biomes associated with this decoration (if any)
 	lua_getfield(L, index, "biomes");
 	if (get_biome_list(L, -1, bmgr, &ore->biomes))
-		errorstream << "register_ore: couldn't get all biomes " << std::endl;
+		errorstream << "register_ore: '" << ore->name << "' uses undefined biome(s)" << std::endl;
 	lua_pop(L, 1);
 
 	//// Get noise parameters if needed

@@ -66,15 +66,15 @@ end
 local function get_formspec2(tabview, name, tabdata)
     local retval = ""
     retval = retval .. "bgcolor[#00000000;false]"
-    retval = retval .. "image_button[2.5,3.4;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_multiplayer;" .. fgettext("Multiplayer") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-    retval = retval .. "image_button[2.5,4.8;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_options;"..      fgettext("Options") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+    retval = retval .. "image_button[2.5,3.4;7,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_multiplayer;" .. fgettext("Multiplayer") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
+    retval = retval .. "image_button[2.5,4.8;7,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_options;"..      fgettext("Options") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
     if PLATFORM=="Android" then
-       retval = retval .. "image_button[8.5,4.8;1,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_help;?;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+       retval = retval .. "image_button[8.5,4.8;1,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_help;?;true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
     end
     -- modstore (broken)
-    --retval = retval .. "image_button[7.5,4.8;1,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_modstore;M;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-    retval = retval .. "image_button[2.5,6.2;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_exit;".. fgettext("Exit") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-    retval = retval .. "image_button[2.5,2.0;7,1;"..mm_texture.basetexturedir.."menu_button.png;btn_show_singleplayer;".. fgettext("Singleplayer") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+    --retval = retval .. "image_button[7.5,4.8;1,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_modstore;M;true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
+    retval = retval .. "image_button[2.5,6.2;7,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_exit;".. fgettext("Exit") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
+    retval = retval .. "image_button[2.5,2.0;7,1;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_singleplayer;".. fgettext("Singleplayer") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
     local si = core.get_screen_info()
 
@@ -84,7 +84,7 @@ local function get_formspec2(tabview, name, tabdata)
 --    print(xdiv..' x '..ydiv..' = '..ratio)
 
     math.randomseed(os.time())
-    local rnd = 'image[6,0.5;9,1.5;'..mm_texture.basetexturedir..'ad_label'..tostring(math.random(1,17))..'.png]'
+    local rnd = 'image[6,0.5;9,1.5;'..minetest.formspec_escape(mm_texture.basetexturedir)..'ad_label'..tostring(math.random(1,17))..'.png]'
 
     return retval .. rnd
 end
@@ -132,8 +132,8 @@ local function on_activate2(type,old_tab,new_tab)
     mm_texture.clear("header")
     mm_texture.clear("footer")
     core.set_clouds(false)
-    core.set_background("background",mm_texture.basetexturedir..'background.png')
-    core.set_background("header",mm_texture.basetexturedir..'header.png')
+    core.set_background("background",minetest.formspec_escape(mm_texture.basetexturedir)..'background.png')
+    core.set_background("header",minetest.formspec_escape(mm_texture.basetexturedir)..'header.png')
 
 
 end

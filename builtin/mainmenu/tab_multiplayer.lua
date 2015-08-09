@@ -25,7 +25,7 @@ local function get_formspec(tabview, name, tabdata)
                 "box[-100,-10;200,12;#999999]" ..
                 "bgcolor[#00000070;true]"..
 
-                "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[12,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
                 --"label[0,1.25;" .. fgettext("Address/Port") .. "]" ..
                 "field[1000.25,5.25;5.5,0.5;te_address;;" ..
                 core.formspec_escape(core.setting_get("address")) .. "]" ..
@@ -42,15 +42,15 @@ local function get_formspec(tabview, name, tabdata)
         --if not core.setting_getbool("public_serverlist") then
         if last_selected_server and last_selected_server.favourite then
                 retval = retval ..
-                "image_button[3.2,9.55;0.8,0.8;"..mm_texture.basetexturedir.."favourite_btn.png;btn_mp_favour;-;true;false;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[3.2,9.55;0.8,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."favourite_btn.png;btn_mp_favour;-;true;false;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         else
                 retval = retval ..
-                "image_button[3.2,9.55;0.8,0.8;"..mm_texture.basetexturedir.."favourite_btn.png;btn_mp_favour;+;true;false;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[3.2,9.55;0.8,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."favourite_btn.png;btn_mp_favour;+;true;false;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         end
 
         retval = retval ..
-                "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mp_connect;" .. fgettext("Connect") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;add_server;" .. fgettext("Add") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[8,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mp_connect;" .. fgettext("Connect") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[4,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;add_server;" .. fgettext("Add") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
                 
 
                 "label[8,8;" .. fgettext("Name") .. ":]" ..

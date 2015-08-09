@@ -62,8 +62,8 @@ local function create_world_formspec(dialogdata)
                 ";" .. gameidx .. "]" ..
 
 
-        "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_create_confirm;".. fgettext("Create") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-        "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_create_cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+        "image_button[8,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;world_create_confirm;".. fgettext("Create") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+        "image_button[12,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;world_create_cancel;".. fgettext("Cancel") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         if #gamemgr.games == 0 then
                 retval = retval .. "box[4,7;8,1;#ff8800]label[4.25,7;" ..

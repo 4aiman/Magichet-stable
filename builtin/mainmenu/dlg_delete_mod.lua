@@ -28,8 +28,8 @@ local function delete_mod_formspec(dialogdata)
                 "box[-100,-10;200,12;#999999]" ..
                 "label[6.5,4.5;" ..
                 fgettext("Are you sure you want to delete \"$1\"?", dialogdata.mod.name) ..  ";]"..
-                "image_button[4,5.7;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_delete_mod_confirm;" .. fgettext("Yes").. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[8,5.7;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_delete_mod_cancel;" .. fgettext("No") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[4,5.7;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_delete_mod_confirm;" .. fgettext("Yes").. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[8,5.7;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_delete_mod_cancel;" .. fgettext("No") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         return retval
 end
 

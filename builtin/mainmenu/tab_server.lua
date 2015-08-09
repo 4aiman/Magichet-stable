@@ -27,12 +27,12 @@ local function get_formspec(tabview, name, tabdata)
             "box[-100,8.5;200,10;#999999]" ..
             "box[-100,-10;200,12;#999999]" ..
             "bgcolor[#00000070;true]"..
-            "image_button[4,8.7;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;start_server;".. fgettext("Play") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[7.8,8.7;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_create;".. fgettext("New") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[4,8.7;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;start_server;".. fgettext("Play") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+            "image_button[7.8,8.7;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;world_create;".. fgettext("New") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
 
-            "image_button[4,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
---            "image_button[6.53,9.55;2.68,0.8;"..mm_texture.basetexturedir.."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-            "image_button[7.8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+            "image_button[4,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;world_delete;".. fgettext("Delete") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+--            "image_button[6.53,9.55;2.68,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;world_configure;".. fgettext("Configure") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+            "image_button[7.8,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;cancel;".. fgettext("Cancel") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
             "label[7,1.5;" .. fgettext("Select World:") .. "]" ..
             
             --"checkbox[1000,9.20;cb_enable_damage;" .. fgettext("Enable Damage") .. ";" .. dump(core.setting_getbool("enable_damage")) .. "]" ..

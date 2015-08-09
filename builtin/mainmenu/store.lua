@@ -164,7 +164,7 @@ function modstore.successfulldialog()
                                 retval = retval .. "label[3,0.75;" .. core.formspec_escape(modstore.lastmodentry.moddetails.basename) .. "]"
 
                         end
-                        retval = retval .. "image_button[2.5,1.5;1,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_confirm_mod_successfull;" .. fgettext("ok") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                        retval = retval .. "image_button[2.5,1.5;1,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_confirm_mod_successfull;" .. fgettext("ok") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                 end,
                 function(this,fields)
                         if fields["btn_confirm_mod_successfull"] ~= nil then
@@ -495,12 +495,12 @@ function modstore.getshortmodinfo(ypos,listentry,details)
         if details.basename then
                 --install button
                 local buttony = ypos + 1.2
-                retval = retval .."image_button[9.1," .. buttony .. ";2.5,0.5;"..mm_texture.basetexturedir.."menu_button.png;btn_install_mod_" .. details.id .. ";"
+                retval = retval .."image_button[9.1," .. buttony .. ";2.5,0.5;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_install_mod_" .. details.id .. ";"
 
                 if modmgr.mod_exists(details.basename) then
-                        retval = retval .. fgettext("re-Install") ..";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                        retval = retval .. fgettext("re-Install") ..";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                 else
-                        retval = retval .. fgettext("Install") ..";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                        retval = retval .. fgettext("Install") ..";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                 end
         end
 
@@ -519,7 +519,7 @@ function modstore.getmodlist(list,yoffset)
         local sb_y_start = 0.2 + yoffset
         local sb_y_end   = (modstore.modsperpage * 1.75) + ((modstore.modsperpage-1) * 0.15)
         local close_button = "image_button[4," .. (sb_y_end + 0.3 + yoffset) ..
-                        ";4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore_close;" .. fgettext("Close store") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                        ";4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_modstore_close;" .. fgettext("Close store") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         if #list.data == 0 then
                 return close_button
@@ -533,9 +533,9 @@ function modstore.getmodlist(list,yoffset)
                                 ((sb_y_end -1.6)/(list.pagecount-1)) * list.page
         scrollbar = scrollbar .. "box[11.6," ..scrollbarpos .. ";0.28,0.5;#32CD32]"
         scrollbar = scrollbar .. "image_button[11.6," .. (sb_y_start)
-                                .. ";0.5,0.5;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore_page_up;^;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                                .. ";0.5,0.5;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_modstore_page_up;^;true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         scrollbar = scrollbar .. "image_button[11.6," .. (sb_y_start + sb_y_end - 0.5)
-                                .. ";0.5,0.5;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore_page_down;v;true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                                .. ";0.5,0.5;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_modstore_page_down;v;true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         local retval = ""
 
@@ -581,7 +581,7 @@ function modstore.getsearchpage(tabview, name, tabdata)
         end
 
         retval = retval ..
-                "image_button[9.5,0.2;2.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore_search;".. fgettext("Search") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[9.5,0.2;2.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_modstore_search;".. fgettext("Search") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
                 "field[0.5,0.5;9,0.5;te_modstore_search;;" .. search .. "]"
 
         retval = retval ..

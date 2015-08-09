@@ -52,8 +52,8 @@ local function get_formspec(data)
                 "label[8,3;" .. fgettext("Depends:") .. "]" ..
                 "textlist[8,3.5;7,4.0;world_config_depends;" ..
                 modmgr.get_dependencies(mod.path) .. ";0]" ..
-                "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_config_world_save;" .. fgettext("Save") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_config_world_cancel;".. fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[8,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_config_world_save;" .. fgettext("Save") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[12,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_config_world_cancel;".. fgettext("Cancel") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         if mod ~= nil and mod.name ~= "" and mod.typ ~= "game_mod" then
                 if mod.is_modpack then
@@ -69,9 +69,9 @@ local function get_formspec(data)
                         end
 
                         if all_enabled == false then
-                                retval = retval .. "image_button[8,7.55;3.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mp_enable;" .. fgettext("Enable MP") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                                retval = retval .. "image_button[8,7.55;3.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mp_enable;" .. fgettext("Enable MP") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                         else
-                                retval = retval .. "image_button[8,7.85;3.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mp_disable;" .. fgettext("Disable MP") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                                retval = retval .. "image_button[8,7.85;3.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mp_disable;" .. fgettext("Disable MP") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                         end
                 else
                         if mod.enabled then
@@ -83,7 +83,7 @@ local function get_formspec(data)
         end
 
         retval = retval ..
-                "image_button[11.75,7.55;3.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_all_mods;" .. fgettext("Enable all") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
+                "image_button[11.75,7.55;3.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_all_mods;" .. fgettext("Enable all") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
                 "textlist[1,3.5;6,4.0;world_config_modlist;"
                 --"textlist[5.5,0.5;5.5,5.75;world_config_modlist;"
 

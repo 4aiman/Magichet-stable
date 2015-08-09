@@ -545,7 +545,7 @@ bool ClientLauncher::create_engine_device(int log_level)
 	SIrrlichtCreationParameters params = SIrrlichtCreationParameters();
 	params.DriverType    = driverType;
 	params.WindowSize    = core::dimension2d<u32>(screenW, screenH);
-	params.Bits          = bits;
+	params.Bits          = bits;z
 	params.AntiAlias     = fsaa;
 	params.Fullscreen    = fullscreen;
 	params.Stencilbuffer = false;

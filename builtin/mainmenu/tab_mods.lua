@@ -36,7 +36,7 @@ local function get_formspec(tabview, name, tabdata)
 --              "label[0.8,4.2;" .. fgettext("Add mod:") .. "]" ..
 --              TODO Disabled due to upcoming release 0.4.8 and irrlicht messing up localization
               "button[0.75,4.85;1.8,0.5;btn_mod_mgr_install_local;".. fgettext("Local install") .. "]" ..
-              "image_button[0,4.85;5.25,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_modstore;".. fgettext("Online mod repository") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+              "image_button[0,4.85;5.25,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_modstore;".. fgettext("Online mod repository") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         local selected_mod = nil
 
@@ -89,10 +89,10 @@ local function get_formspec(tabview, name, tabdata)
 
                 if selected_mod.is_modpack then
                         retval = retval .. ";0]" ..
-                                "image_button[10,4.85;2,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mod_mgr_rename_modpack;" ..
-                                fgettext("Rename") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
-                        retval = retval .. "image_button[5.5,4.85;4.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mod_mgr_delete_mod;"
-                                .. fgettext("Uninstall selected modpack") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                                "image_button[10,4.85;2,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mod_mgr_rename_modpack;" ..
+                                fgettext("Rename") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
+                        retval = retval .. "image_button[5.5,4.85;4.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mod_mgr_delete_mod;"
+                                .. fgettext("Uninstall selected modpack") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                 else
                         --show dependencies
 
@@ -102,8 +102,8 @@ local function get_formspec(tabview, name, tabdata)
 
                         retval = retval .. toadd .. ";0]"
 
-                        retval = retval .. "image_button[5.5,4.85;4.5,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_mod_mgr_delete_mod;"
-                                .. fgettext("Uninstall selected mod") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                        retval = retval .. "image_button[5.5,4.85;4.5,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_mod_mgr_delete_mod;"
+                                .. fgettext("Uninstall selected mod") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
                 end
         end
         return retval

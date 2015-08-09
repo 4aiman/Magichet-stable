@@ -39,7 +39,7 @@ VERSION_MINOR=$(grep -E '^set\(VERSION_MINOR [0-9]+\)$' CMakeLists.txt | tr -dC 
 VERSION_PATCH=$(grep -E '^set\(VERSION_PATCH [0-9]+\)$' CMakeLists.txt | tr -dC 0-9)
 ANDROID_VERSION_CODE=$(grep -E '^ANDROID_VERSION_CODE = [0-9]+$' build/android/Makefile | tr -dC 0-9)
 
-echo "Current Minetest version: $VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
+echo "Current Magichet version: $VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
 echo "Current Android version code: $ANDROID_VERSION_CODE"
 
 

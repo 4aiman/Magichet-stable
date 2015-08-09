@@ -1734,6 +1734,9 @@ bool Game::startup(bool *kill,
 
 	driver              = device->getVideoDriver();
 	smgr                = device->getSceneManager();
+	ILogger* irr_logger = device->getLogger();
+	irr_logger->setLogLevel(ELL_NONE);
+
 
 	smgr->getParameters()->setAttribute(scene::OBJ_LOADER_IGNORE_MATERIAL_FILES, true);
 
@@ -3538,22 +3541,36 @@ void Game::processPlayerInteraction(std::vector<aabb3f> &highlight_boxes,
 	else
 		runData->repeat_rightclick_timer = 0;
 
-	if (playeritem_def.usable && input->getLeftState()) {
-		if (input->getLeftClicked())
-			client->interact(4, pointed);
-	} else if (pointed.type == POINTEDTHING_NODE) {
-		ToolCapabilities playeritem_toolcap =
-				playeritem.getToolCapabilities(itemdef_manager);
-		handlePointingAtNode(runData, pointed, playeritem_def,
-				playeritem_toolcap, dtime);
-	} else if (pointed.type == POINTEDTHING_OBJECT) {
-		handlePointingAtObject(runData, pointed, playeritem,
-				player_position, show_debug);
-	} else if (input->getLeftState()) {
-		// When button is held down in air, show continuous animation
-		runData->left_punch = true;
-	}
+	/*if (playeritem_def.usable && input->getLeftState()) 
+	   {
+		if (input->getLeftClicked()) 
+		   {
+			//client->interact(4, pointed);
+		   }
+	   } 
+	else */
+	     if (pointed.type == POINTEDTHING_NODE) 
+	        {
+			 ToolCapabilities playeritem_toolcap = playeritem.getToolCapabilities(itemdef_manager);
+		     handlePointingAtNode(runData, pointed, playeritem_def,	playeritem_toolcap, dtime);
+	        } 
+	else if (pointed.type == POINTEDTHING_OBJECT) 
+	        {
+		     handlePointingAtObject(runData, pointed, playeritem, player_position, show_debug);
+	        } 
+	else if (input->getLeftState()) 
+	        {
+		     // When button is held down in air, show continuous animation
+		     runData->left_punch = true;
+	        }
+		
 
+	if (playeritem_def.usable && input->getRightState()) {
+		if (input->getRightClicked()) {
+			client->interact(4, pointed);
+			camera->setDigging(0);
+		}
+    }
 	runData->pointed_old = pointed;
 
 	if (runData->left_punch || input->getLeftClicked())

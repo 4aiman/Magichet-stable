@@ -39,8 +39,8 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("keymap_jump", "KEY_SPACE");
 	settings->setDefault("keymap_sneak", "KEY_LSHIFT");
 	settings->setDefault("keymap_drop", "KEY_KEY_Q");
-	settings->setDefault("keymap_inventory", "KEY_KEY_I");
-	settings->setDefault("keymap_special1", "KEY_KEY_E");
+	settings->setDefault("keymap_inventory", "KEY_KEY_E");
+	settings->setDefault("keymap_special1", "KEY_KEY_F");
 	settings->setDefault("keymap_chat", "KEY_KEY_T");
 	settings->setDefault("keymap_cmd", "/");
 	settings->setDefault("keymap_minimap", "KEY_F9");
@@ -362,10 +362,13 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("gui_scaling_filter_txr2img", "false");
 #else
 	settings->setDefault("screen_dpi", "72");
-	settings->setDefault("hud_scaling", "0.7");
 	settings->setDefault("gui_scaling_filter", "true");
 	settings->setDefault("gui_scaling_filter_txr2img", "true");
 #endif
+#ifdef _WIN32 // WINDOWS
+#else
+	settings->setDefault("hud_scaling", "0.7");
+#endif	
 }
 
 void override_default_settings(Settings *settings, Settings *from)

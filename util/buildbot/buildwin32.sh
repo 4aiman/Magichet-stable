@@ -29,6 +29,8 @@ mkdir -p $libdir
 
 cd $builddir
 
+#<<'COMMENT'
+
 # Get stuff
 [ -e $packagedir/irrlicht-$irrlicht_version.zip ] || wget http://sfan5.pf-control.de/irrlicht-$irrlicht_version-win32.zip \
 	-c -O $packagedir/irrlicht-$irrlicht_version.zip
@@ -73,33 +75,74 @@ cd $libdir
 [ -d luajit ] || unzip -o $packagedir/luajit-$luajit_version-static-win32.zip -d luajit
 [ -d leveldb ] || unzip -o $packagedir/libleveldb-$leveldb_version-win32.zip -d leveldb
 
-# Get minetest
-cd $builddir
-if [ ! "x$EXISTING_MINETEST_DIR" = "x" ]; then
-	ln -s $EXISTING_MINETEST_DIR minetest
-else
-	[ -d minetest ] && (cd minetest && git pull) || (git clone https://github.com/minetest/minetest)
-fi
-cd minetest
-git_hash=`git show | head -c14 | tail -c7`
+# Get magichet
 
-# Get minetest_game
-cd games
-if [ "x$NO_MINETEST_GAME" = "x" ]; then
-	[ -d minetest_game ] && (cd minetest_game && git pull) || (git clone https://github.com/minetest/minetest_game)
-fi
-cd ../..
+cd $builddir
+echo Removing leftovers...
+rm -rf $builddir/magichet
+
+echo Copying most recent version...
+mkdir $builddir/magichet
+
+echo builtin...
+mkdir $builddir/magichet/builtin
+cp -rf $builddir/../../../builtin $builddir/magichet
+
+echo client...
+mkdir $builddir/magichet/client
+cp -rf $builddir/../../../client $builddir/magichet
+
+echo cmake files...
+mkdir $builddir/magichet/cmake
+cp -rf $builddir/../../../cmake $builddir/magichet
+
+echo docs...
+mkdir $builddir/magichet/doc
+cp -rf $builddir/../../../doc $builddir/magichet
+
+echo fonts...
+mkdir $builddir/magichet/fonts
+cp -rf $builddir/../../../fonts $builddir/magichet
+
+echo magichet subgame...
+mkdir $builddir/magichet/games
+mkdir $builddir/magichet/games/magichet
+cp -rf $builddir/../../../games/magichet $builddir/magichet/games
+
+echo misc files...
+mkdir $builddir/magichet/misc
+cp -rf $builddir/../../../misc $builddir/magichet
+cp -rf $builddir/../../../magichet.conf.example $builddir/magichet/magichet.conf.example
+cp -rf $builddir/../../../README.txt $builddir/magichet/README.txt
+
+echo translations...
+mkdir $builddir/magichet/po
+cp -rf $builddir/../../../po $builddir/magichet
+
+echo textures...
+cp -rf $builddir/../../../textures $builddir/magichet
+
+echo sources...
+mkdir $builddir/magichet/src
+cp -rf $builddir/../../../src $builddir/magichet/
+cp -rf $builddir/../../../CMakeLists.txt $builddir/magichet/CMakeLists.txt
+
+
+
+git_hash="1.2.1"
 
 # Build the thing
-cd minetest
+cd $builddir/magichet
 [ -d _build ] && rm -Rf _build/
 mkdir _build
 cd _build
+export LDFLAGS=-m32
 cmake .. \
 	-DCMAKE_INSTALL_PREFIX=/tmp \
 	-DVERSION_EXTRA=$git_hash \
-	-DBUILD_CLIENT=1 -DBUILD_SERVER=0 \
+	-DBUILD_CLIENT=1 -DBUILD_SERVER=1 \
 	-DCMAKE_TOOLCHAIN_FILE=$toolchain_file \
+	-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32 \
 	\
 	-DENABLE_SOUND=1 \
 	-DENABLE_CURL=1 \
@@ -157,6 +200,6 @@ cmake .. \
 	-DLEVELDB_LIBRARY=$libdir/leveldb/lib/libleveldb.dll.a \
 	-DLEVELDB_DLL=$libdir/leveldb/bin/libleveldb.dll
 
-make package -j2
+make package -j4
 
 # EOF

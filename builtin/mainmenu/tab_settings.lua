@@ -131,10 +131,10 @@ local function dlg_confirm_reset_formspec(data)
         local retval =
                 "size[8,3]" ..
                 "label[1,1;".. fgettext("Are you sure to reset your singleplayer world?") .. "]"..
-                "image_button[1,2;2.6,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_reset_singleplayer_confirm;"..
-                                fgettext("Yes") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[4,2;2.8,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_reset_singleplayer_cancel;"..
-                                fgettext("No!!!") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[1,2;2.6,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_reset_singleplayer_confirm;"..
+                                fgettext("Yes") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[4,2;2.8,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_reset_singleplayer_cancel;"..
+                                fgettext("No!!!") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         return retval
 end
 
@@ -281,20 +281,20 @@ local function formspec(tabview, name, tabdata)
                 "box[9.75,2.5;5.25,4;#999999]"..
                 "checkbox[10,2.5;cb_shaders;".. fgettext("Shaders") .. ";"
                 .. dump(core.setting_getbool("enable_shaders")) .. "]"..
-                "image_button[0,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_change_keys;".. fgettext("Change keys") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[4,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"--..
---                "image_button[3.75,5;3.88,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[0,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_change_keys;".. fgettext("Change keys") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[4,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"--..
+--                "image_button[3.75,5;3.88,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
         else
                 tab_string = tab_string ..
---                "image_button[3.75,5;3.88,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+--                "image_button[3.75,5;3.88,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_reset_singleplayer;".. fgettext("Reset singleplayer world") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
-                "image_button[4,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..mm_texture.basetexturedir..
+                "image_button[4,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_textures;".. fgettext("Texturepacks") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir)..
                 "menu_button_b.png]"
         end
 
         tab_string = tab_string ..
-        "image_button[8,9.55;3.95,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_show_credits;".. fgettext("Credits") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-        "image_button[12,9.55;4,0.8;"..mm_texture.basetexturedir.."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+        "image_button[8,9.55;3.95,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_show_credits;".. fgettext("Credits") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+        "image_button[12,9.55;4,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;btn_cancel;".. fgettext("OK") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
 
         if PLATFORM == "Android" then

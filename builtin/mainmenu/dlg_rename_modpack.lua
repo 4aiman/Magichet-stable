@@ -27,10 +27,10 @@ local function rename_modpack_formspec(dialogdata)
                 "field[4.5,1.4;6,0.5;te_modpack_name;;" ..
                 dialogdata.mod.name ..
                 "]" ..
-                "image_button[5,4.2;2.6,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_rename_modpack_confirm;"..
-                                fgettext("Accept") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"..
-                "image_button[7.5,4.2;2.8,0.8;"..mm_texture.basetexturedir.."menu_button.png;dlg_rename_modpack_cancel;"..
-                                fgettext("Cancel") .. ";true;true;"..mm_texture.basetexturedir.."menu_button_b.png]"
+                "image_button[5,4.2;2.6,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_rename_modpack_confirm;"..
+                                fgettext("Accept") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"..
+                "image_button[7.5,4.2;2.8,0.8;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button.png;dlg_rename_modpack_cancel;"..
+                                fgettext("Cancel") .. ";true;true;"..minetest.formspec_escape(mm_texture.basetexturedir).."menu_button_b.png]"
 
         return retval
 end

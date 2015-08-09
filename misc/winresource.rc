@@ -20,8 +20,8 @@ LANGUAGE 0, SUBLANG_NEUTRAL
 //
 
 1 VERSIONINFO
- FILEVERSION VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH_ORIG,0
- PRODUCTVERSION VERSION_MAJOR,VERSION_MINOR,VERSION_PATCH_ORIG,0
+ FILEVERSION 1,2,1,0
+ PRODUCTVERSION 1,2,1,0
  FILEFLAGSMASK 0x3fL
 #ifndef NDEBUG
  FILEFLAGS 0x1L
@@ -38,13 +38,12 @@ BEGIN
     BEGIN
         VALUE "Comments", "\0"
         VALUE "CompanyName", "NS Team\0"
-        VALUE "FileDescription", "Magichet (Freeminer) engine\0"
+        VALUE "FileDescription", "Magichet engine\0"
         VALUE "FileVersion", VERSION_STRING
         VALUE "InternalName", "Mgichet engine\0"
         VALUE "LegalCopyright", "(c) 2014 celeron55\0"
         VALUE "LegalTrademarks", """Magichet"" is property of 4aiman, don't use the name for your application without permission!\0"
         VALUE "OriginalFilename", "Magichet.exe\0"
-        VALUE "PrivateBuild", VERSION_EXTRA_STRING
         VALUE "ProductName", "Magichet\0"
         VALUE "ProductVersion", PRODUCT_VERSION_STRING
         VALUE "SpecialBuild", BUILDMODE
