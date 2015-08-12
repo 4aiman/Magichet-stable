@@ -51,6 +51,8 @@ struct ToolCapabilities;
 
 #define PP(x) "("<<(x).X<<","<<(x).Y<<","<<(x).Z<<")"
 
+u8 CAO_VER = 0;
+
 std::map<u16, ClientActiveObject::Factory> ClientActiveObject::m_types;
 
 SmoothTranslator::SmoothTranslator():
@@ -615,6 +617,19 @@ void GenericCAO::initialize(const std::string &data)
 	// version
 	u8 version = readU8(is);
 	// check version
+	if(version == 2) // In PROTOCOL_VERSION 27
+	{
+//        printf("\n\tcao_ver = %d (default)\n",CAO_VER);
+		CAO_VER = version;
+//        printf("\n\cao_ver = %d (sent)\n",CAO_VER);
+		m_name = deSerializeString(is);
+		m_is_player = readU8(is);
+		m_id = readS16(is);
+		m_position = readV3F1000(is);
+		m_yaw = readF1000(is);
+		m_hp = readS16(is);
+		num_messages = readU8(is);
+	}
 	if(version == 1) // In PROTOCOL_VERSION 14
 	{
 		m_name = deSerializeString(is);
@@ -930,7 +945,7 @@ void GenericCAO::addToScene(scene::ISceneManager *smgr, ITextureSource *tsrc,
 			m_animated_meshnode->animateJoints(); // Needed for some animations
 			m_animated_meshnode->setScale(v3f(m_prop.visual_size.X,
 					m_prop.visual_size.Y,
-					m_prop.visual_size.X));					
+					m_prop.visual_size.X));
 			u8 li = m_last_light;
 			setMeshColor(m_animated_meshnode->getMesh(), video::SColor(255,li,li,li));
 
@@ -1643,10 +1658,16 @@ void GenericCAO::processMessage(const std::string &data)
 		bool sneak = !readU8(is);
 		bool sneak_glitch = !readU8(is);
 		// added to the end of queue to support inferior clients
-		float override_fall_tolerance = readF1000(is);
-		float override_attack_power = readF1000(is);
-		float override_efficiency = readF1000(is);
-
+		float override_fall_tolerance = 1;
+		float override_attack_power = 1;
+		float override_efficiency = 1;
+        //printf("\n\tcao_ver = %d (read)\n",CAO_VER);
+		if (CAO_VER == 2) {
+		   override_fall_tolerance = readF1000(is);
+		   override_attack_power = readF1000(is);
+		   override_efficiency = readF1000(is);
+		   printf("\n\tfall_tolerance = %d\nfall_attack_power = %d\nfall_efficiency = %d\n",override_fall_tolerance,override_attack_power,override_efficiency);
+		}
 
 		if(m_is_local_player)
 		{

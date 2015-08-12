@@ -202,6 +202,13 @@ ServerActiveObject* LuaEntitySAO::create(ServerEnvironment *env, v3f pos,
 			velocity = readV3F1000(is);
 			yaw = readF1000(is);
 		}
+		else if(version == 2){
+			name = deSerializeString(is);
+			state = deSerializeLongString(is);
+			hp = readS16(is);
+			velocity = readV3F1000(is);
+			yaw = readF1000(is);
+		}
 	}
 	// create object
 	infostream<<"LuaEntitySAO::create(name=\""<<name<<"\" state=\""
@@ -354,7 +361,27 @@ std::string LuaEntitySAO::getClientInitializationData(u16 protocol_version)
 {
 	std::ostringstream os(std::ios::binary);
 
-	if(protocol_version >= 14)
+	if(protocol_version >= 27)
+	{
+		writeU8(os, 2); // version
+		os<<serializeString(""); // name
+		writeU8(os, 0); // is_player
+		writeS16(os, getId()); //id
+		writeV3F1000(os, m_base_position);
+		writeF1000(os, m_yaw);
+		writeS16(os, m_hp);
+
+		writeU8(os, 4 + m_bone_position.size()); // number of messages stuffed in here
+		os<<serializeLongString(getPropertyPacket()); // message 1
+		os<<serializeLongString(gob_cmd_update_armor_groups(m_armor_groups)); // 2
+		os<<serializeLongString(gob_cmd_update_animation(
+			m_animation_range, m_animation_speed, m_animation_blend, m_animation_loop)); // 3
+		for(std::map<std::string, core::vector2d<v3f> >::const_iterator ii = m_bone_position.begin(); ii != m_bone_position.end(); ++ii){
+			os<<serializeLongString(gob_cmd_update_bone_position((*ii).first, (*ii).second.X, (*ii).second.Y)); // m_bone_position.size
+		}
+		os<<serializeLongString(gob_cmd_update_attachment(m_attachment_parent_id, m_attachment_bone, m_attachment_position, m_attachment_rotation)); // 4
+	}
+	else if(protocol_version >= 14)
 	{
 		writeU8(os, 1); // version
 		os<<serializeString(""); // name
@@ -445,13 +472,13 @@ int LuaEntitySAO::punch(v3f dir,
 			time_from_last_punch);
 
     int damage = result.damage;
-    
+
 	if (result.did_punch) {
 		if (damage > 0) {
-			if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {			
- 				   PlayerSAO *ppp = (PlayerSAO *)puncher; 
+			if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
+ 				   PlayerSAO *ppp = (PlayerSAO *)puncher;
 				   damage *= ppp->m_physics_override_attack_power;
-				}   
+				}
 			setHP(getHP() - damage);
 			std::string punchername = puncher ? puncher->getDescription() : "nil";
 			actionstream << getDescription() << " punched by "
@@ -987,7 +1014,7 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		m_physics_override_sent = true;
 		std::string str = gob_cmd_update_physics_override(m_physics_override_speed,
 				m_physics_override_jump, m_physics_override_gravity,
-				m_physics_override_sneak, m_physics_override_sneak_glitch, 
+				m_physics_override_sneak, m_physics_override_sneak_glitch,
 				m_physics_override_fall_tolerance, m_physics_override_attack_power, m_physics_override_efficiency);
 		// create message and add to list
 		ActiveObjectMessage aom(getId(), true, str);
@@ -1094,7 +1121,7 @@ int PlayerSAO::punch(v3f dir,
 
 	HitParams hitparams = getHitParams(m_armor_groups, toolcap,
 			time_from_last_punch);
-			
+
 	int damage = hitparams.hp;
 
 	std::string punchername = "nil";
@@ -1109,11 +1136,11 @@ int PlayerSAO::punch(v3f dir,
 				hitparams.hp);
 
 	if (!damage_handled) {
-		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {			
-		    PlayerSAO *ppp = (PlayerSAO *)puncher; 
+		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
+		    PlayerSAO *ppp = (PlayerSAO *)puncher;
 			damage *= ppp->m_physics_override_attack_power;
-		}   
-		setHP(getHP() - damage);		
+		}
+		setHP(getHP() - damage);
 	} else { // override client prediction
 		if (puncher->getType() == ACTIVEOBJECT_TYPE_PLAYER) {
 			std::string str = gob_cmd_punched(0, getHP());
