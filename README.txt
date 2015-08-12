@@ -13,16 +13,13 @@ In case you downloaded the source code:
 ---------------------------------------
 If you downloaded the Magichet Engine source code in which this file is
 contained, you probably want to download the magichet project too:
-  https://github.com/4aiman/magichet/
+  https://github.com/4aiman/magichet-today
 See the README.txt in it.
 
 Further documentation
 ----------------------
-- Website: http://minetest.net/
-- Wiki: http://wiki.minetest.net/
 - Developer wiki: http://dev.minetest.net/
-- Forum: http://forum.minetest.net/
-- Github: https://github.com/4aiman/magichet/
+- Github: https://github.com/4aiman/Magichet-stable/
 - doc/ directory of source distribution
 
 This game is not finished
