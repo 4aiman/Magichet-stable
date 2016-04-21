@@ -1,8 +1,11 @@
-License of Magichet engine source code
---------------------------------------
-
 Magichet
 ========
+
+
+This is a latest "stable" alpha version of Magichet engine
+----------------------------------------------------------
+To get the up-to-date sources for Android app visit https://www.dropbox.com/sh/okgz1phuzotkroj/AADRQyX3wB4jsW_cPtFkm0yKa?dl=0
+
 
 A Minecraft inspired game.
 
